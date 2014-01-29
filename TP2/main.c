@@ -1,6 +1,9 @@
-#include "msp430.h"
+#include "msp430fg4618.h"
+#include "lcd.h"
 
-int main(void)
+int main (void)
 {
-  // TODO: TP2
+	WDTCTL = WDTPW + WDTHOLD; // Stop watchdog timer
+	lcd_init();
+	for (;;); // endless loop
 }

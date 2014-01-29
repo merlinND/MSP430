@@ -58,7 +58,7 @@
         </option>
         <option>
           <name>RTConfigPath</name>
-          <state>$TOOLKIT_DIR$\LIB\DLIB\dl430xsfn.h</state>
+          <state>$TOOLKIT_DIR$\LIB\DLIB\dl430fn.h</state>
         </option>
         <option>
           <name>RTLibraryPath</name>
@@ -101,7 +101,7 @@
         </option>
         <option>
           <name>OGChipSelectMenu</name>
-          <state>MSP430FG4618	MSP430FG4618</state>
+          <state>MSP430	Generic MSP430 device</state>
         </option>
         <option>
           <name>GStackHeapOverride</name>
@@ -654,7 +654,7 @@
         </option>
         <option>
           <name>XclOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>XclFile</name>
@@ -1772,6 +1772,12 @@
       <data/>
     </settings>
   </configuration>
+  <file>
+    <name>$PROJ_DIR$\lcd.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\lcd.h</name>
+  </file>
   <file>
     <name>$PROJ_DIR$\main.c</name>
   </file>

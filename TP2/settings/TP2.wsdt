@@ -23,6 +23,10 @@
         <ColumnWidth3>81</ColumnWidth3>
       </Build>
       <TerminalIO/>
+      <Debug-Log>
+        <ColumnWidth0>20</ColumnWidth0>
+        <ColumnWidth1>1621</ColumnWidth1>
+      </Debug-Log>
     </Static>
     <Windows>
       <Wnd2>
@@ -34,7 +38,6 @@
             <Session>
               <NodeDict>
                 <ExpandedNode>TP2</ExpandedNode>
-                <ExpandedNode>TP2/main.c</ExpandedNode>
               </NodeDict>
             </Session>
           </Tab>
@@ -49,6 +52,12 @@
             <Factory>Build</Factory>
             <Session/>
           </Tab>
+          <Tab>
+            <Identity>TabID-669-12349</Identity>
+            <TabName>Debug Log</TabName>
+            <Factory>Debug-Log</Factory>
+            <Session/>
+          </Tab>
         </Tabs>
         <SelectedTab>0</SelectedTab>
       </Wnd3>
@@ -60,10 +69,26 @@
           <Filename>$WS_DIR$\main.c</Filename>
           <XPos>0</XPos>
           <YPos>0</YPos>
-          <SelStart>472</SelStart>
-          <SelEnd>472</SelEnd>
+          <SelStart>63</SelStart>
+          <SelEnd>63</SelEnd>
         </Tab>
         <ActiveTab>0</ActiveTab>
+        <Tab>
+          <Factory>TextEditor</Factory>
+          <Filename>$WS_DIR$\lcd.h</Filename>
+          <XPos>0</XPos>
+          <YPos>0</YPos>
+          <SelStart>8</SelStart>
+          <SelEnd>9</SelEnd>
+        </Tab>
+        <Tab>
+          <Factory>TextEditor</Factory>
+          <Filename>$WS_DIR$\lcd.c</Filename>
+          <XPos>0</XPos>
+          <YPos>0</YPos>
+          <SelStart>0</SelStart>
+          <SelEnd>0</SelEnd>
+        </Tab>
       </Pane>
       <ActivePane>0</ActivePane>
       <Sizes>
@@ -101,6 +126,24 @@
         <Row6>
           <Sizes/>
         </Row6>
+        <Row7>
+          <Sizes/>
+        </Row7>
+        <Row8>
+          <Sizes/>
+        </Row8>
+        <Row9>
+          <Sizes/>
+        </Row9>
+        <Row10>
+          <Sizes/>
+        </Row10>
+        <Row11>
+          <Sizes/>
+        </Row11>
+        <Row12>
+          <Sizes/>
+        </Row12>
       </Top>
       <Left>
         <Row0>
