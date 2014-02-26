@@ -3,6 +3,41 @@
 claims P5.2-P5.4, P8, P9, and P10.0-P10.5
 assumes ACLK to be default 32khz (LFXT1)
 */
+
+// .EGF DCBA
+
+// 0101 1111
+#define NUMBER0 0x5F
+// 0000 0110
+#define NUMBER1 0x06
+// 0110 1011
+#define NUMBER2 0x6B
+// 0010 1111
+#define NUMBER3 0x2F
+// 0011 0110
+#define NUMBER4 0x36
+// 0011 1101
+#define NUMBER5 0x3D
+// 0111 1101
+#define NUMBER6 0x7D
+// 0000 0111
+#define NUMBER7 0x07
+// 0111 1111
+#define NUMBER8 0x7F
+// 0011 1111
+#define NUMBER9 0x3F
+
+#define LCDMEM_OFFSET 2
+
+void lcd_clear()
+{
+  int j;
+  for( j=0 ; j<20 ; j++)
+  {
+    LCDMEM[j] = 0x00; // Shut down all the tiles
+  }
+}
+
 void lcd_init()
 {
 	// our LCD screen is a SBLCDA4 => 4-mux operation (SLAU213 p4)
@@ -40,11 +75,7 @@ void lcd_init()
 	// we don't need to mess with charge pumps and such.
 	// clear all LCD memory (cf SLAU056J p. 26-4)
 	
-	int j;
-	for( j=0 ; j<20 ; j++)
-	{
-		LCDMEM[j] = 0x00; // Shut down all the tiles
-	}
+	lcd_clear();
 }
 
 void display_dollar()
@@ -53,4 +84,54 @@ void display_dollar()
                       // which is connected to the motherboard to the 21th pin
                       // which corresponds to the 25th in the msp430. So, in the
                       // LCD memory, it's at the 12th register in the 2nd word
+}
+
+int get_word_from_digit(int digit)
+{
+  switch(digit)
+  {
+  case 0:
+    return NUMBER0;
+  case 1:
+    return NUMBER1;
+  case 2:
+    return NUMBER2;
+  case 3:
+    return NUMBER3;
+  case 4:
+    return NUMBER4;
+  case 5:
+    return NUMBER5;
+  case 6:
+    return NUMBER6;
+  case 7:
+    return NUMBER7;
+  case 8:
+    return NUMBER8;
+  case 9:
+    return NUMBER9;
+  default:
+    return 0x00;
+  }
+}
+   
+
+void lcd_display_digit(int pos, int digit)
+{
+  int idx = pos + LCDMEM_OFFSET;
+  LCDMEM[idx] = get_word_from_digit(digit);
+}
+
+void lcd_display_number(unsigned int number)
+{
+  lcd_clear();
+  if(number == 0 )
+    lcd_display_digit(0, 0);
+    int i=0;
+    while(number)
+    {
+      lcd_display_digit(i,number%10);
+      number /= 10;
+      i++;
+    }
 }
