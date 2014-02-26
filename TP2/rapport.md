@@ -2,7 +2,7 @@
 Réalisation d'un pilote LCD
 Merlin NIMIER-DAVID & Robin RICARD
 
-## Initialisation du contrôleur
+**Initialisation du contrôleur**
 
 1. La fonction `lcd_init()` écrit dans :
   - `P5DIR` et `P5SEL` pour désactiver la fonction GPIO sur les pins P5.2, P5.3 et P5.4. Ces pins sont multiplexés avec les fonctions COM1,   COM2 et COM3, que l'on souhaite utiliser.
@@ -45,11 +45,13 @@ Merlin NIMIER-DAVID & Robin RICARD
 		fFrame = (32000/128)/(2*4) = 31.25kHz
 
 
-## Découverte de l'écran
-8. 
+**Découverte de l'écran**
 
-## Affichage de nombres
 
-## Passage de paramètres, exécution pas-à-pas, et examen de la pile
 
-## Générateur pseudo-aléatoire
+
+**Affichage de nombres**
+
+**Passage de paramètres, exécution pas-à-pas, et examen de la pile**
+
+**Générateur pseudo-aléatoire**
