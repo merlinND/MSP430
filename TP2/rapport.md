@@ -16,7 +16,6 @@ Merlin NIMIER-DAVID & Robin RICARD
 
 3. D'après [datasheet.pdf | p26-28], les registres sont projetés en :
 
-
 | Nom         | Taille | Adresse      |
 | ----------- | ------ | ------------ |
 | `P5DIR`     | 8      | 032h         |
