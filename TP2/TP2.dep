@@ -41,6 +41,15 @@
       </inputs>
     </file>
     <file>
+      <name>$PROJ_DIR$\Debug\Obj\TP2.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 12 9</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
       <name>$PROJ_DIR$\main.c</name>
       <outputs>
         <tool>

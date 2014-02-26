@@ -43,6 +43,6 @@ void lcd_init()
 	int j;
 	for( j=0 ; j<20 ; j++)
 	{
-		LCDMEM[j] = 0xFF;
+		LCDMEM[j] = 0x00; // Shut down all the tiles
 	}
 }
