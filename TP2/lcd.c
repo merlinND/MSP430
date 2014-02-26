@@ -18,7 +18,7 @@ void lcd_init()
 		(0<<1) | // unused bit
 		(1<<2) | // enable LCD segments
 		(3<<3) | // LCD mux rate: 4-mux
-		(7<<5) ; // frequency select
+		(3<<5) ; // frequency select
 	
 	// Configure port pins
 	//
