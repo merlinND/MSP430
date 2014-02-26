@@ -2,7 +2,7 @@
 Réalisation d'un pilote LCD
 Merlin NIMIER-DAVID & Robin RICARD
 
-## Initialisation du contrôleur
+**Initialisation du contrôleur**
 
 1. La fonction `lcd_init()` écrit dans :
   - `P5DIR` et `P5SEL` pour désactiver la fonction GPIO sur les pins P5.2, P5.3 et P5.4. Ces pins sont multiplexés avec les fonctions COM1,   COM2 et COM3, que l'on souhaite utiliser.
@@ -27,10 +27,38 @@ Merlin NIMIER-DAVID & Robin RICARD
 
 4. D'après [datasheet.pdf | p.16], la mémoire vive du MSP430FG4618 est projetée dans la plage d'adresse O30FFh - 01100h (jusqu'à 01900h pour la plage étendue).
 
-## Découverte de l'écran
+5. Les lignes 42 et 43 de `msp430fg4618.h` sont :
 
-## Affichage de nombres
+		#define DEFC(name, address) __no_init volatile unsigned char name @ address;
+		#define DEFW(name, address) __no_init volatile unsigned short name @ address;
+	Chaque ligne définit une macro servant à placer une variable en mémoire, à une adresse précise. L'opérateur `@` permet d'indiquer directement l'adresse. Le mot-clé `__no_init` permet d'indiquer qu'il ne s'agit pas d'une valeur constante initialisée à la déclaration 	(d'après [compiler.pdf | p196]). La première ligne permet de placer une variable de la taille d'un `char`, la seconde ligne de la taille d'un `short`.
 
-## Passage de paramètres, exécution pas-à-pas, et examen de la pile
+6. D'après [MSP430.pdf | chap26.2.4], la fréquence `fLCD` est basée sur l'oscillateur ACLK. On fait l'hypothèse que ACLK oscille à 32kHz. On souhaite augmenter fFrame afin de supprimer le scintillement. On a :
 
-## Générateur pseudo-aléatoire
+		fLCD = 2 * mux * fFrame
+	Avec, ici, `mux = 4`.
+
+7. Le champ LCDFREQ (bits 5-7) du registre LCDACTL permet de spécifier le diviseur de ACLK à utiliser pour calculer la fréquence du LCD. Dans le code de `lcd_init()` donné, le diviseur sélectionné était 7d = 111b, ce qui correspond à une division de la fréquence par 512 (d'après [MSP430.pdf | chap26.3-LCDACTL]).
+	
+	On remplace cette valeur par 011b = 3d, ce qui correspond à une division de la fréquence par 128. On obtient ainsi :
+
+		fFrame = (32000/128)/(2*4) = 31.25kHz
+
+
+**Découverte de l'écran**
+
+8. On passe l'ensemble des registres `LCDMEM[0..19]` à 0h plutôt qu'à FFh.
+
+
+9. D'après [LCD.pdf | p.3], le boîtier comporte 26 pins. Les pints 15-17 correspondent aux broches communes COM0-4, tandis que les autres broches servent aux segments.
+
+10. On en déduit que l'écran comporte 22 * 4 = 88 segments.
+
+11. D'après la matrice [LCD.pdf | p.3], la combinaison COM0 et SP26 permettent d'allumer le symbole `$`.
+
+12. D'après le schéma électrique [Motherboard.pdf | p.15], les broches du MSP430 correspondantes sont respectivement les broches 51 (COM0) et 37 (S21).
+
+**Passage de paramètres, exécution pas-à-pas, et examen de la pile**
+
+
+**Générateur pseudo-aléatoire**
