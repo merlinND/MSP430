@@ -46,3 +46,11 @@ void lcd_init()
 		LCDMEM[j] = 0x00; // Shut down all the tiles
 	}
 }
+
+void display_dollar()
+{
+   LCDMEM[12] = 0x10; // Power up the 26th pin with COM0 on the LCD component
+                      // which is connected to the motherboard to the 21th pin
+                      // which corresponds to the 25th in the msp430. So, in the
+                      // LCD memory, it's at the 12th register in the 2nd word
+}

@@ -5,5 +5,6 @@ int main (void)
 {
 	WDTCTL = WDTPW + WDTHOLD; // Stop watchdog timer
 	lcd_init();
+        display_dollar();
 	for (;;); // endless loop
 }
