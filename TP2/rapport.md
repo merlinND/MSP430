@@ -50,11 +50,15 @@ Merlin NIMIER-DAVID & Robin RICARD
 8. On passe l'ensemble des registres `LCDMEM[0..19]` à 0h plutôt qu'à FFh.
 
 
-9. 
+9. D'après [LCD.pdf | p.3], le boîtier comporte 26 pins. Les pints 15-17 correspondent aux broches communes COM0-4, tandis que les autres broches servent aux segments.
 
+10. On en déduit que l'écran comporte 22 * 4 = 88 segments.
 
-**Affichage de nombres**
+11. D'après la matrice [LCD.pdf | p.3], la combinaison COM0 et SP26 permettent d'allumer le symbole `$`.
+
+12. D'après le schéma électrique [Motherboard.pdf | p.15], les broches du MSP430 correspondantes sont respectivement les broches 51 (COM0) et 37 (S21).
 
 **Passage de paramètres, exécution pas-à-pas, et examen de la pile**
+
 
 **Générateur pseudo-aléatoire**
