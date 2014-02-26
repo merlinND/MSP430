@@ -47,7 +47,10 @@ Merlin NIMIER-DAVID & Robin RICARD
 
 **Découverte de l'écran**
 
+8. On passe l'ensemble des registres `LCDMEM[0..19]` à 0h plutôt qu'à FFh.
 
+
+9. 
 
 
 **Affichage de nombres**
