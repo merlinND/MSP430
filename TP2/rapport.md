@@ -27,7 +27,26 @@ Merlin NIMIER-DAVID & Robin RICARD
 
 4. D'après [datasheet.pdf | p.16], la mémoire vive du MSP430FG4618 est projetée dans la plage d'adresse O30FFh - 01100h (jusqu'à 01900h pour la plage étendue).
 
+5. Les lignes 42 et 43 de `msp430fg4618.h` sont :
+
+		#define DEFC(name, address) __no_init volatile unsigned char name @ address;
+		#define DEFW(name, address) __no_init volatile unsigned short name @ address;
+	Chaque ligne définit une macro servant à placer une variable en mémoire, à une adresse précise. L'opérateur `@` permet d'indiquer directement l'adresse. Le mot-clé `__no_init` permet d'indiquer qu'il ne s'agit pas d'une valeur constante initialisée à la déclaration 	(d'après [compiler.pdf | p196]). La première ligne permet de placer une variable de la taille d'un `char`, la seconde ligne de la taille d'un `short`.
+
+6. D'après [MSP430.pdf | chap26.2.4], la fréquence `fLCD` est basée sur l'oscillateur ACLK. On fait l'hypothèse que ACLK oscille à 32kHz. On souhaite augmenter fFrame afin de supprimer le scintillement. On a :
+
+		fLCD = 2 * mux * fFrame
+	Avec, ici, `mux = 4`.
+
+7. Le champ LCDFREQ (bits 5-7) du registre LCDACTL permet de spécifier le diviseur de ACLK à utiliser pour calculer la fréquence du LCD. Dans le code de `lcd_init()` donné, le diviseur sélectionné était 7d = 111b, ce qui correspond à une division de la fréquence par 512 (d'après [MSP430.pdf | chap26.3-LCDACTL]).
+	
+	On remplace cette valeur par 011b = 3d, ce qui correspond à une division de la fréquence par 128. On obtient ainsi :
+
+		fFrame = (32000/128)/(2*4) = 31.25kHz
+
+
 ## Découverte de l'écran
+8. 
 
 ## Affichage de nombres
 
