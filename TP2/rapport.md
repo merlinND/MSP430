@@ -197,3 +197,64 @@ Merlin NIMIER-DAVID & Robin RICARD
 			return n;
 		}
 
+### Différentes manières de multiplier
+
+23. Dans la fonction `alea`, la multiplication a été traduite par le compilateur par la suite d'instructions suivante :
+	
+		mov.w    &n,R15        // Copie de `n` vers un registre de travail
+		mov.w    R15,R14       // Sauvegarde de `n` dans un autre registre
+		rla.w    R15           // Décalage à gauche arithmétique (équivalent à `n * 2`)
+		add.w    R14,R15       // Ajout de `n` dans le registre de travail
+		add.w    #0x5,R15      // Ajout de `5` dans le registre de travail
+		mov.w    R15,&n        // Sortie du résultat
+
+	Lorsqu'une "vraie" multiplication est utilisée (par exemple, en utilisant une seconde opérande variable), la suite d'instructions est la suivante :
+
+		push.w   SP
+		dint
+		nop
+		mov.w   &n,&0x130
+		mov.w   0x2(SP),&0x138
+		mov.w   &0x13A,R15
+		pop.w   SR
+		add.w   #0x5,R15
+		mov.w   R15,&n
+
+24. On vérifie les adresses utilisées dans le manuel [msp430.pdf, chapitre 8.3] :
+	
+	| Adresse | Nom du registre | Fonction                                                             |
+	| ------- | --------------- | -------------------------------------------------------------------- |
+	| 0x130   | MPY             | Opérande 1 pour multiplication non signée                            |
+	| 0x138   | OP2             | Seconde opérande                                                     |
+	| 0x13A   | RESLO           | 16 bits de poids faible du résultat                                  |
+	| 0x13C   | RESHI           | 16 bits de poids fort du résultat (**ignorés dans notre programme**) |
+
+25. Instructions assembleur commentées en ayant pris connaissance des fonctions du multiplieur :
+
+	push.w   SP             // Empilement de la seconde opérande dans la pile
+	dint                    // Masquage des interruptions pour garantir une exécution atomique
+	nop                     // Pas d'opération
+	mov.w   &n,&0x130       // Copie de l'opérande `n` vers le multiplieur (projeté en mémoire)
+	mov.w   0x2(SP),&0x138  // Copie de la seconde opérande vers le multiplieur (projeté en mémoire)
+	mov.w   &0x13A,R15      // Copie du résultat du multiplieur dans le registre 15
+	pop.w   SR              // Dépilement de la seconde opérande
+	add.w   #0x5,R15        // Ajout de 5
+	mov.w   R15,&n          // Sortie du résultat
+
+26. On compile avec les droits modes d'accès au multiplieur et on observe le code généré.
+
+	* *Direct Access* : comme précédemment, le compilateur inscrit directement l'adresse des registres dans le code assembleur. Les instructions de placement des opérandes et de récupération du résultat sont explicites. La multiplication est effectuée par le multiplieur.
+
+	* *Library Calls* : les instructions d'accès au multiplieur sont placées dans une fonction `Mul16Hw`, qui est appelée depuis notre fonction `alea`. Le suffixe "Hw" indique que la multiplication est effectuée par le multiplieur *hardware*.
+
+	* Désactivé : cette fois, un fonction `Mul16` est appelée : elle implémente un algorithme de multiplication *software*, avec les instructions assembleur disponibles.
+
+27. On compare la compilation de `mul(42, 170)` avec les trois modes :
+
+	| Mode          | Nombre d'instructions générées | Nombre de cycles (programme complet) |
+	| ------------- | ------------------------------ | ------------------------------------ |
+	| Direct Access | 9                              | 68                                   |
+	| Library Calls | 10                             | 75                                   |
+	| Désactivé     | 25                             | 110                                  |
+
+28. L'utilisation du multiplieur matériel est toujours plus avantageuse en temps d'exécution ET en nombre d'instructions. L'autorisation de l'écriture d'accès direct permet d'économiser en sauts (moins de cycles), mais implique une répétition des instructions à chaque multiplication du code. La dernière solution, la multiplication *software*, permet de remplacer le multiplieur *hardware* s'il n'est pas disponible.
