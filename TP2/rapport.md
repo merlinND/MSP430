@@ -145,11 +145,11 @@ Merlin NIMIER-DAVID & Robin RICARD
 16. Code assembleur implémentant l'appel `lcd_display_seven_digits(1, 2, 3, 4, 5, 6, 7)` :
 		
 		// Passage des arguments
-		// Empilement (sur la stack)
+		// Empilement (sur la stack) des variables qui ne tiennent pas dans les registres
 		push.w    #0x7
 		push.w    #0x6
 		push.w    #0x5
-		// Écriture dans des registres CPU
+		// Écriture dans des registres CPU du maximum de paramètres possible
 		mov.w     #0x4, R15
 		mov.w     #0x3, R14
 		mov.w     #0x2, R13
@@ -157,6 +157,20 @@ Merlin NIMIER-DAVID & Robin RICARD
 		// Saut vers le code assembleur de la fonction
 		call      #lcd_display_seven_digits
 		
-	Les commentaires sont tirés de [MSP430.pdf | chap3.4]
+	Les commentaires ont été rédigés à l'aide de [MSP430.pdf | chap3.4]
+
+17. À la ligne `lcd_display_digit(6, f);`, la pile a le contenu suivant :
+
+	| Adesse | Valeur | Commentaire                                                                      |
+	| ------ | ------ | -------------------------------------------------------------------------------- |
+	| 0x30F2 | 0x0004 | Valeur du paramètre b (sauvegardée depuis un registre)                           |
+	|     +2 | 0x0002 | Valeur du paramètre d (sauvegardée depuis un registre)                           |
+	|     +4 | 0x31E2 | Adresse à laquelle revenir à la fin de l'exécution de `lcd_display_seven_digits` |
+	|     +6 | 0x0005 | Valeur du paramètre e (à charger dans un registre)                               |
+	|     +8 | 0x0006 | Valeur du paramètre f (à charger dans un registre)                               |
+	|    +10 | 0x0007 | Valeur du paramètre g (à charger dans un registre)                               |
+	|    +12 | 0x3108 | Adresse à laquelle revenir à la fin de l'exécution de `main`                     |
 
 **Générateur pseudo-aléatoire**
+
+18. 
