@@ -1,3 +1,31 @@
+[DebugChecksum]
+Checksum=-248036011
+[DisAssemblyWindow]
+NumStates=_ 1
+State 1=_ 1
+[InstructionProfiling]
+Enabled=_ 0
+[CodeCoverage]
+Enabled=_ 0
+[State Storage]
+Control Register=0
+[Sequencer]
+Control Register=0
+NextState0=0
+NextState1=0
+[Action Register]
+Break=1
+State Storage=0
+[StackPlugin]
+Enabled=1
+OverflowWarningsEnabled=1
+WarningThreshold=90
+SpWarningsEnabled=1
+WarnHow=0
+UseTrigger=1
+TriggerName=main
+LimitSize=0
+ByteLimit=50
 [InterruptLog]
 LogEnabled=0
 SumEnabled=0
@@ -17,36 +45,9 @@ ActionState=1
 [TraceHelper]
 Enabled=0
 ShowSource=1
-[DebugChecksum]
-Checksum=-1626815009
-[DisAssemblyWindow]
-NumStates=_ 1
-State 1=_ 1
-[InstructionProfiling]
-Enabled=_ 0
-[CodeCoverage]
-Enabled=_ 0
-[State Storage]
-Control Register=0
-[Sequencer]
-Control Register=0
-NextState0=0
-NextState1=0
-[Action Register]
-Break=2
-State Storage=0
-[StackPlugin]
-Enabled=1
-OverflowWarningsEnabled=1
-WarningThreshold=90
-SpWarningsEnabled=1
-WarnHow=0
-UseTrigger=1
-TriggerName=main
-LimitSize=0
-ByteLimit=50
 [Breakpoints]
-Count=0
+Bp0=_ "STD_CODE" "{$PROJ_DIR$\main.c}.44.1@1" 0 0 0 0 "" 0 ""
+Count=1
 [FET]
 Clock mode=14
 Extended Clock mode=-1
@@ -81,6 +82,6 @@ SuppressDialog=0
 Enabled=0
 [DriverProfiling]
 Enabled=0
-Mode=93488800
+Mode=94376992
 Graph=0
 Symbiont=0
