@@ -135,3 +135,14 @@ void lcd_display_number(unsigned int number)
       i++;
     }
 }
+
+void lcd_display_seven_digits(int a, int b, int c, int d, int e, int f, int g)
+{
+  lcd_display_digit(0,a);
+  lcd_display_digit(1,b);
+  lcd_display_digit(2,c);
+  lcd_display_digit(3,d);
+  lcd_display_digit(4,e);
+  lcd_display_digit(5,f);
+  lcd_display_digit(6,g);
+}

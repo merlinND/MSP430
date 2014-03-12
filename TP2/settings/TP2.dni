@@ -18,10 +18,9 @@ ActionState=1
 Enabled=0
 ShowSource=1
 [DebugChecksum]
-Checksum=-622435509
+Checksum=339033043
 [DisAssemblyWindow]
-NumStates=_ 1
-State 1=_ 1
+NumStates=_ 0
 [InstructionProfiling]
 Enabled=_ 0
 [CodeCoverage]
@@ -33,7 +32,7 @@ Control Register=0
 NextState0=0
 NextState1=0
 [Action Register]
-Break=1
+Break=3
 State Storage=0
 [StackPlugin]
 Enabled=1
@@ -46,7 +45,8 @@ TriggerName=main
 LimitSize=0
 ByteLimit=50
 [Breakpoints]
-Count=0
+Bp0=_ "STD_CODE" "{$PROJ_DIR$\lcd.c}.146.3@1" 1 0 0 0 "" 0 ""
+Count=1
 [FET]
 Clock mode=14
 Extended Clock mode=-1
@@ -81,6 +81,6 @@ SuppressDialog=0
 Enabled=0
 [DriverProfiling]
 Enabled=0
-Mode=97879136
+Mode=58382616
 Graph=0
 Symbiont=0
