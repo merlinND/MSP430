@@ -258,3 +258,46 @@ Merlin NIMIER-DAVID & Robin RICARD
 	| Désactivé     | 25                             | 110                                  |
 
 28. L'utilisation du multiplieur matériel est toujours plus avantageuse en temps d'exécution ET en nombre d'instructions. L'autorisation de l'écriture d'accès direct permet d'économiser en sauts (moins de cycles), mais implique une répétition des instructions à chaque multiplication du code. La dernière solution, la multiplication *software*, permet de remplacer le multiplieur *hardware* s'il n'est pas disponible.
+
+### Programmation en assembleur
+
+29. On teste le code suivant :
+
+		lcd_init();
+		uint16_t a = mul(42, 170);
+		lcd_display_number(a);
+		for (;;);
+
+	Dans l'état actuel, la fonction `mul` écrite en assembleur est vide. Pourtant, la valeur `42` est affichée sur l'écran LCD. En exécutant le programme pas à pas, on remarque que les arguments de la fonction `mul` sont chargés dans les regitres R12 (valeur `42`) et R13 (valeur `170`). Or la fonction `lcd_display_number` utilise directement le registre R12 comme argument. La documentation [Compiler.pdf p.95] explique que la valeur de retour est stockée dans le registre R12.
+
+30. On implémente la multiplication par une simple boucle itérative :
+
+		PUBLIC mul ; export `mul` to the outside world
+		RSEG  CODE ; this is a relocatable segment containing code
+
+		mul:       ; entry point to the function
+		  TST R13
+		  JZ mulendnull ; jump if second operand is null
+		  MOV R12,R14 ; working copy
+		  DEC R13 ; we already got the first operand one time
+		mulloop:
+		  TST R13
+		  JZ mulend ; return when the second operand is null
+		  ADD R14,R12 ; add the working copy to the accumulator
+		  DEC R13 ; decrement the counter
+		  JMP mulloop ; loop
+		mulend:
+		  RET ; return R12
+		mulendnull:
+		  CLR R12
+		  RET ; return 0
+		END
+
+31. Notre implémentation de la multiplication est très peu efficace car l'algorithme utilisé est naïf et n'utilise pas le multiplieur matériel. L'algorithme `Mul16` proposé par le compilateur est beaucoup plus efficace.
+
+	| Mode          | Nombre d'instructions générées | Nombre de cycles (programme complet) |
+	| ------------- | ------------------------------ | ------------------------------------ |
+	| Direct Access | 9                              | 68                                   |
+	| Library Calls | 10                             | 75                                   |
+	| Désactivé     | 25                             | 110                                  |
+	| `mul`         | 15                             | 345                                  |
