@@ -1,9 +1,11 @@
+#include <stdint.h>
+
 #include "msp430fg4618.h"
 #include "lcd.h"
 
-unsigned int alea()
+uint16_t alea()
 {
-  static unsigned int n = 1;
+  static uint16_t n = 1;
   
   n = n * 3 + 5;
   return n;
@@ -14,7 +16,12 @@ int main (void)
   WDTCTL = WDTPW + WDTHOLD; // Stop watchdog timer
   P1DIR = P1DIR & 0xFC; // Configure push buttons as input
   lcd_init();
-  lcd_display_seven_digits(1, 2, 3, 4, 5, 6, 7);
+  
+  unsigned int a = 30000;
+  unsigned int b = 40000;
+  unsigned long c = (unsigned long)a * b;
+  
+  lcd_display_number(c);
   for (;;) {
     // While button is not pressed
     while ( (P1IN & 0x01) != 0x00 );
