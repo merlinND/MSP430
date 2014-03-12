@@ -173,4 +173,27 @@ Merlin NIMIER-DAVID & Robin RICARD
 
 ## Générateur pseudo-aléatoire
 
-18. 
+### Représentation des entiers
+
+18. D'après [compiler.pdf, p. 170], la variable `n`, de type `unsigned int` est représentée sur 16 bits.
+
+19. L'opération `30000 * 40000 = 1200000000 > 2^16 - 1 = 65535`. Le résultat affiché est `35840`, qui correspond à l'opération modulo `2^16`. Il s'agit d'un dépassement de capacité (*overflow*).
+
+20. Pour stocker un tel nombre, on aurait du utilier le type `unsigned long`, qui peut contenir des valeurs jusqu'à `2^32 - 1 = 4294967295`.
+
+21. Pour éviter le tronquage à 16 bits, on cast l'un des deux opérandes en `unsigned long`. Le calcul devient :
+	
+		unsigned long c = (unsigned long)a * b;
+	
+	Dans le debugger, on constate que le résultat du calcul (sur 32 bits) a été placé dans les registres R12 (16 bits de poids faible) et R13 (16 bits de poids fort). Le résultat est cette fois-ci correct.
+
+22. Le code du générateur aléatoire devient :
+
+		uint16_t alea()
+		{
+			static uint16_t n = 1;
+
+			n = n * 3 + 5;
+			return n;
+		}
+
