@@ -57,7 +57,7 @@
         </option>
         <option>
           <name>DdfFileName</name>
-          <state>$TOOLKIT_DIR$\config\MSP430FG4618.ddf</state>
+          <state></state>
         </option>
         <option>
           <name>ProcTMS</name>
@@ -187,7 +187,7 @@
         </option>
         <option>
           <name>TargetVoltage</name>
-          <state>3.3</state>
+          <state>3.0</state>
         </option>
         <option>
           <name>AllowLockedFlashAccessP7</name>
@@ -236,7 +236,7 @@
         </option>
         <option>
           <name>RadioSoftwareBreakpointType</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>TargetSettlingtime</name>
