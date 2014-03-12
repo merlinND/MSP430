@@ -2,7 +2,7 @@
 Réalisation d'un pilote LCD
 Merlin NIMIER-DAVID & Robin RICARD
 
-**Initialisation du contrôleur**
+## Initialisation du contrôleur
 
 1. La fonction `lcd_init()` écrit dans :
   - `P5DIR` et `P5SEL` pour désactiver la fonction GPIO sur les pins P5.2, P5.3 et P5.4. Ces pins sont multiplexés avec les fonctions COM1,   COM2 et COM3, que l'on souhaite utiliser.
@@ -45,7 +45,7 @@ Merlin NIMIER-DAVID & Robin RICARD
 		fFrame = (32000/128)/(2*4) = 31.25kHz
 
 
-**Découverte de l'écran**
+## Découverte de l'écran
 
 8. On passe l'ensemble des registres `LCDMEM[0..19]` à 0h plutôt qu'à FFh.
 
@@ -140,16 +140,16 @@ Merlin NIMIER-DAVID & Robin RICARD
 		}
 
 
-**Passage de paramètres, exécution pas-à-pas, et examen de la pile**
+## Passage de paramètres, exécution pas-à-pas, et examen de la pile
 
 16. Code assembleur implémentant l'appel `lcd_display_seven_digits(1, 2, 3, 4, 5, 6, 7)` :
 		
 		// Passage des arguments
-		// Empilement (sur la stack)
+		// Empilement (sur la stack) des variables qui ne tiennent pas dans les registres
 		push.w    #0x7
 		push.w    #0x6
 		push.w    #0x5
-		// Écriture dans des registres CPU
+		// Écriture dans des registres CPU du maximum de paramètres possible
 		mov.w     #0x4, R15
 		mov.w     #0x3, R14
 		mov.w     #0x2, R13
@@ -157,6 +157,43 @@ Merlin NIMIER-DAVID & Robin RICARD
 		// Saut vers le code assembleur de la fonction
 		call      #lcd_display_seven_digits
 		
-	Les commentaires sont tirés de [MSP430.pdf | chap3.4]
+	Les commentaires ont été rédigés à l'aide de [MSP430.pdf | chap3.4]
 
-**Générateur pseudo-aléatoire**
+17. À la ligne `lcd_display_digit(6, f);`, la pile a le contenu suivant :
+
+	| Adesse | Valeur | Commentaire                                                                      |
+	| ------ | ------ | -------------------------------------------------------------------------------- |
+	| 0x30F2 | 0x0004 | Valeur du paramètre b (sauvegardée depuis un registre)                           |
+	|     +2 | 0x0002 | Valeur du paramètre d (sauvegardée depuis un registre)                           |
+	|     +4 | 0x31E2 | Adresse à laquelle revenir à la fin de l'exécution de `lcd_display_seven_digits` |
+	|     +6 | 0x0005 | Valeur du paramètre e (à charger dans un registre)                               |
+	|     +8 | 0x0006 | Valeur du paramètre f (à charger dans un registre)                               |
+	|    +10 | 0x0007 | Valeur du paramètre g (à charger dans un registre)                               |
+	|    +12 | 0x3108 | Adresse à laquelle revenir à la fin de l'exécution de `main`                     |
+
+## Générateur pseudo-aléatoire
+
+### Représentation des entiers
+
+18. D'après [compiler.pdf, p. 170], la variable `n`, de type `unsigned int` est représentée sur 16 bits.
+
+19. L'opération `30000 * 40000 = 1200000000 > 2^16 - 1 = 65535`. Le résultat affiché est `35840`, qui correspond à l'opération modulo `2^16`. Il s'agit d'un dépassement de capacité (*overflow*).
+
+20. Pour stocker un tel nombre, on aurait du utilier le type `unsigned long`, qui peut contenir des valeurs jusqu'à `2^32 - 1 = 4294967295`.
+
+21. Pour éviter le tronquage à 16 bits, on cast l'un des deux opérandes en `unsigned long`. Le calcul devient :
+	
+		unsigned long c = (unsigned long)a * b;
+	
+	Dans le debugger, on constate que le résultat du calcul (sur 32 bits) a été placé dans les registres R12 (16 bits de poids faible) et R13 (16 bits de poids fort). Le résultat est cette fois-ci correct.
+
+22. Le code du générateur aléatoire devient :
+
+		uint16_t alea()
+		{
+			static uint16_t n = 1;
+
+			n = n * 3 + 5;
+			return n;
+		}
+
