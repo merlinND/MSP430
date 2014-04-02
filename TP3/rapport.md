@@ -23,15 +23,37 @@ B3145 | Merlin NIMIER-DAVID & Robin RICARD
 
 ### Configuration du timer
 
-2.
+2. Le `Timer_A` propose les quatre modes de fonctionnement suivants, dont le fonctionnement est détaillé dans [MSP430.pdf | chap 15.2.3 et 15.2.4]
 
-3.
+	- **Stop** : Le timer est arrêté, il ne se passe rien.	- **Up** : Le timer compte de 0 à une valeur au choix, à spécifier dans le registre `TACCR0`. Lorsque la valeur maximale est atteinte, le compte recommence à 9. Remarque : lorsque le timer est passé en mode Up alors que le registre `TAR` a une valeur supérieure à `TACCR0`, il est directement passé à 0. Une interruption `CCIFG` est générée lorsque le compteur atteint `TACCR0`, et une interruption `TAIFG` lorsqu'il repasse à 0 [MSP430.pdf | page 15-6]	- **Continuous** : Le timer compte de 0 à `FFFFh`, et reprend à 0 lorsque cette valeur maximale est atteinte. L'utlisateur peut configurer différents intervalles de temps indépendants. Une interruption à la fin de chaque intervalle. La période du prochain intervalle est communiquée au moment de l'interruption [MSP430.pdf | page 15-8].	- **Up/down** : Le timer compte de 0 à une valeur au choix (à spécifier dans le registre `TACCR0`), puis de cette valeur à 0. Deux interruptions sont générées par période : lorsque la valeur maximale est atteinte, puis lorsque 0 est atteint [MSP430.pdf | page 15-9].
 
-4.
+3. D'après [MSP430.pdf | page 15-4], le `Timer_A` peut utiliser les sources d'horloge : `ACLK`, `SMCLK`, ou une horloge externe vie `TACLK` ou `INCLK`. La source est configurée via le registre `TASSEL`. On peut également préciser un diviseur d'horloge (2, 4, ou 8) via le registre `ID`.
 
-5.
+4. Les fréquences des horloges sont :
 
-6.
+	- `ACLK` : `32.768 kHz` (d'après [Motherboard.pdf | p.7])
+	- `SMCLK` : horloge configurable, sourcée par défaut sur l'horloge interne `DCOCLK` avec un multiplicateur de 32. On a donc ici une fréquence de `1.048576 MHz` (d'après [MSP430.pdf | chapitre 5.2]).
+
+5. On souhaite mesurer un intervalle temporel de `10 ms`.
+
+	| Source   | Fréquence      | Nombre de cycles pour `10 ms` |
+	| -------- | -------------- | ----------------------------- |
+	| `ACLK`   | `32.768 kHz`   | 327.68 cycles                 |
+	| `SMCLK`  | `1.048576 MHz` | 10485.76 cycles               |
+
+6. Nous ne pouvons compter qu'un nombre entier de cycles. On aura donc, à chaque intervalle temporel mesuré, une erreur sur le temps mesuré.
+
+	| Source   | Cycles mesurés | Erreur par intervalle |  Erreur    |
+	| -------- | -------------- | --------------------- |  --------- |
+	| `ACLK`   | 327 cycles     | 0.68 cycles           |  20.752 µs |
+	| `SMCLK`  | 10485 cycles   | 0.76 cycles           |  0.725 µs  |
+	
+	On pourrait réduire légèrement l'erreur en arrondissant le nombre de cycles mesurés au plus proche :
+
+	| Source   | Cycles mesurés | Erreur par intervalle |  Erreur    |
+	| -------- | -------------- | --------------------- |  --------- |
+	| `ACLK`   | 328 cycles     | 0.32 cycles           |  9.766 µs  |
+	| `SMCLK`  | 10486 cycles   | 0.24 cycles           |  0.229 µs  |
 
 7.
 
