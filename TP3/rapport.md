@@ -25,9 +25,9 @@ B3145 | Merlin NIMIER-DAVID & Robin RICARD
 
 2. Le `Timer_A` propose les quatre modes de fonctionnement suivants, dont le fonctionnement est détaillé dans [MSP430.pdf | chap 15.2.3 et 15.2.4]
 
-	- **Stop** : Le timer est arrêté, il ne se passe rien.	- **Up** : Le timer compte de 0 à une valeur au choix, à spécifier dans le registre `TACCR0`. Lorsque la valeur maximale est atteinte, le compte recommence à 9. Remarque : lorsque le timer est passé en mode Up alors que le registre `TAR` a une valeur supérieure à `TACCR0`, il est directement passé à 0. Une interruption `CCIFG` est générée lorsque le compteur atteint `TACCR0`, et une interruption `TAIFG` lorsqu'il repasse à 0 [MSP430.pdf | page 15-6]	- **Continuous** : Le timer compte de 0 à `FFFFh`, et reprend à 0 lorsque cette valeur maximale est atteinte. L'utlisateur peut configurer différents intervalles de temps indépendants. Une interruption à la fin de chaque intervalle. La période du prochain intervalle est communiquée au moment de l'interruption [MSP430.pdf | page 15-8].	- **Up/down** : Le timer compte de 0 à une valeur au choix (à spécifier dans le registre `TACCR0`), puis de cette valeur à 0. Deux interruptions sont générées par période : lorsque la valeur maximale est atteinte, puis lorsque 0 est atteint [MSP430.pdf | page 15-9].
+	- **Stop** : Le timer est arrêté, il ne se passe rien.	- **Up** : Le timer compte de 0 à une valeur au choix, à spécifier dans le champ `TACCR0`. Lorsque la valeur maximale est atteinte, le compte recommence à 9. Remarque : lorsque le timer est passé en mode Up alors que le registre `TAR` a une valeur supérieure à `TACCR0`, il est directement passé à 0. Une interruption `CCIFG` est générée lorsque le compteur atteint `TACCR0`, et une interruption `TAIFG` lorsqu'il repasse à 0 [MSP430.pdf | page 15-6]	- **Continuous** : Le timer compte de 0 à `FFFFh`, et reprend à 0 lorsque cette valeur maximale est atteinte. L'utlisateur peut configurer différents intervalles de temps indépendants. Une interruption à la fin de chaque intervalle. La période du prochain intervalle est communiquée au moment de l'interruption [MSP430.pdf | page 15-8].	- **Up/down** : Le timer compte de 0 à une valeur au choix (à spécifier dans le champ `TACCR0`), puis de cette valeur à 0. Deux interruptions sont générées par période : lorsque la valeur maximale est atteinte, puis lorsque 0 est atteint [MSP430.pdf | page 15-9].
 
-3. D'après [MSP430.pdf | page 15-4], le `Timer_A` peut utiliser les sources d'horloge : `ACLK`, `SMCLK`, ou une horloge externe vie `TACLK` ou `INCLK`. La source est configurée via le registre `TASSEL`. On peut également préciser un diviseur d'horloge (2, 4, ou 8) via le registre `ID`.
+3. D'après [MSP430.pdf | page 15-4], le `Timer_A` peut utiliser les sources d'horloge : `ACLK`, `SMCLK`, ou une horloge externe vie `TACLK` ou `INCLK`. La source est configurée via le registre `TASSEL`. On peut également préciser un diviseur d'horloge (2, 4, ou 8) via le champ `ID` du registre `TACTL`.
 
 4. Les fréquences des horloges sont :
 
@@ -54,8 +54,29 @@ B3145 | Merlin NIMIER-DAVID & Robin RICARD
 	| -------- | -------------- | --------------------- |  --------- |
 	| `ACLK`   | 328 cycles     | 0.32 cycles           |  9.766 µs  |
 	| `SMCLK`  | 10486 cycles   | 0.24 cycles           |  0.229 µs  |
+	
+	Bien que ces valeurs semblent faibles, l'erreur cumulée pourrait s'avérer gênante. En effet, après 10 secondes avec la source `ACLK`, l'erreur cumulée est de `9 ms`.
 
-7.
+7. On choisit la source `ACLK` avec un diviseur de 1. On place le `Timer_A` en mode **Continuous**. On configure la valeur maximale (`TACCR0`) à 328 (d'après le calcul réalisé à la question précédente).
+
+		void init_timer (long period)
+		{
+			// Reset the timer (clear any previous configuration)
+			TACTL = TACTL | (1 << 2);
+			// Set clock source to ACLK
+			// Clock divider is 1 by default
+			TACTL = TACTL | (1 << 8);
+
+			// Enable Up mode
+			TACTL = TACTL | (1 << 4);
+			// Set the maximum value for Up mode (328 cycles)
+			TACCR0 = 0x148;
+
+			// Enable interruptions
+			// Note: timer interrupt vector is TAIV
+			TACTL = TACTL | (1 << 1);
+		}
+
 
 ### Traitement de l'interruption
 
