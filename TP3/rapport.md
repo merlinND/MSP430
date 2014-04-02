@@ -104,9 +104,38 @@ B3145 | Merlin NIMIER-DAVID & Robin RICARD
 
 ## Étude du mécanisme d'interruption
 
-15.
+15. Code assembleur généré par le compilateur pour le traitement d'interruption :
 
-16.
+		// Sauvegarde du contexte (d'après [compiler.pdf | p.24])
+		push.w  R13
+		push.w  R12
+		push.w  R15
+		push.w  R14
+
+		mov.w   &cpt,R12             // Passage du paramètre cpt
+		call    #lcd_display_number  // Appel de fonction
+
+		inc.w   &cpt                 // Incrémentation de cpt
+
+		// Restauration du contexte
+		pop.w   R14
+		pop.w   R15
+		pop.w   R12
+		pop.w   R13
+		reti
+
+	Lorsque l'on supprime la directive `#pragma`, le compilateur supprime la fonction car elle n'est plus appelée. De même, il est impossible de supprimer le qualificatif `__interrupt` en conservant la directive `#pragma` puisque le handler d'interruption doit être défini comme tel.
+	
+	En supprimant à la fois `#pragma` et `__interrupt`, on obtient l'assembleur suivant :
+	
+		mov.w   &cpt,R12             // Passage du paramètre cpt
+		call    #lcd_display_number  // Appel de fonction
+
+		inc.w   &cpt                 // Incrémentation de cpt
+		
+	On remarque que la sauvegarde du contexte n'a pas été effectuée, ce qui est cohérent.
+
+16. Les registres `R12`, `R13`, `R14` et `R15` sont sauvegardés. D'après [compiler.pdf | p.24], il s'agit des registres utilisés par le handler d'interruption.
 
 17.
 
