@@ -14,8 +14,8 @@ void init_timer ()
 
 	// Enable Up mode
 	TACTL = TACTL | (1 << 4);
-	// Set the maximum value for Up mode (328 cycles)
-	TACCR0 = 0x148;
+	// Set the maximum value for Up mode
+	TACCR0 = 326;
 
 	// Enable interruptions
 	// Note: timer interrupt vector is TAIV

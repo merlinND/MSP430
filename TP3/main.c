@@ -25,6 +25,10 @@ int main (void)
 
   cpt = 0;
   
+  // While button is not pressed
+  while ( (P1IN & 0x01) != 0x00 );
+  // While button has not been released
+  while ( (P1IN & 0x01) == 0x00 );
   init_timer();
   for(;;) {
     // While button is not pressed
