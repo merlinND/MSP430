@@ -16,7 +16,7 @@ int main (void)
 {
   WDTCTL = WDTPW + WDTHOLD; // stop watchdog timer
   
-  // Enable GIE bit (processor interruptions)
+  __enable_interrupt();
 
   lcd_init(); // Init Driver
 
