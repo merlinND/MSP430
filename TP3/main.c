@@ -3,6 +3,13 @@
 
 unsigned int cpt;
 
+// This will get executed 100 times per second
+void mon_traitement_interruption_timer(void)
+{
+	lcd_display_number(cpt);
+	cpt ++;
+}
+
 int main (void)
 {
   WDTCTL = WDTPW + WDTHOLD; // stop watchdog timer

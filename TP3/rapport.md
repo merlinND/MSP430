@@ -37,7 +37,7 @@ B3145 | Merlin NIMIER-DAVID & Robin RICARD
 
 ### Traitement de l'interruption
 
-8.
+8. On utilise le signal d'interruption `TACCR0` comme vu à la question 2.
 
 9.
 
