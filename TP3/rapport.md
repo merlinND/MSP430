@@ -84,19 +84,23 @@ B3145 | Merlin NIMIER-DAVID & Robin RICARD
 
 9. L'instruction de préprocesseur `#pragma opt=value` est équivalente à l'instruction préprocesseur `#define OPT _Pragma("opt=value")` qui définit une option spécifique à la plateforme (_Pragma directive_) (d'après [compiler.pdf | p.255]).  Dans notre cas, on utilise la _Pragma Directive_ `vector` qui définit quel vecteur d'interruption on va modifier (d'après [compiler.pdf | p.240]).
 
-10. `__interrupt` est égalemetn une directive de préprocesseur définissant à quel _handler_ va se rapporter l'interruption. On doit lui passer la signature de la fonction à appeler. Généralement, on utilise de `#pragma` en conjonction de `__interrupt`. [compiler p221]
+10. `__interrupt` est un "qualificatif" à appliquer aux fonctions destinées être un _handler_  d'interruption. Généralement, on utilise `#pragma` en conjonction avec `__interrupt` [compiler.pdf | p.221]
 
 		// [msp430fg4618.h l.2284]
 		#pragma vector=TIMERA0_VECTOR
 		__interrupt void mon_traitement_interruption_timer(void);
 
-11.
+11. On n'utilise pas les interruptions `TAIFG` du `Timer_A` mais le mode **capture / compare** du canal `CCR0`. Pour activer les interruptions sur ce canal, d'après [MSP430.pdf | p.15-22], on active le bit `CCIE` du registre `TACCTL0`.
 
-12.
+		TACCTL0 = TACCTL0 | (1 << 4);
 
-13.
+12. Le bit `GIE` du registre de statut du processeur sert à activer les interruptions masquables [MSP430.pdf | p.3-6].
 
-14.
+13. On utilise la "fonction intrinsèque" `__enable_interrupt` fournie par le compilateur, décrite dans [compiler.pdf | p.220].
+
+		__enable_interrupt();
+
+14. Après comparaison de l'évolution du compteur avec un chronomètre, on ajuste le nombre de cycles de timer pour la période. On passe de 328 cycles / période à 326 cycles / période.
 
 ## Étude du mécanisme d'interruption
 
