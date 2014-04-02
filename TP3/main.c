@@ -1,21 +1,22 @@
 #include "msp430fg4618.h"
 #include "lcd.h"
+#include "timer.h"
 
 unsigned int cpt;
 
 // This will get executed 100 times per second
-void mon_traitement_interruption_timer(void)
+#pragma vector=TIMERA0_VECTOR
+__interrupt void mon_traitement_interruption_timer(void)
 {
 	lcd_display_number(cpt);
 	cpt ++;
 }
 
-#pragma vector=TIMERA0_VECTOR
-__interrupt void mon_traitement_interruption_timer(void);
-
 int main (void)
 {
   WDTCTL = WDTPW + WDTHOLD; // stop watchdog timer
+  
+  __enable_interrupt();
 
   lcd_init(); // Init Driver
 
@@ -23,6 +24,12 @@ int main (void)
 	P1DIR = P1DIR & 0xFC; // Configure push buttons as input
 
   cpt = 0;
+  
+  // While button is not pressed
+  while ( (P1IN & 0x01) != 0x00 );
+  // While button has not been released
+  while ( (P1IN & 0x01) == 0x00 );
+  init_timer();
   for(;;) {
     // While button is not pressed
     while ( (P1IN & 0x01) != 0x00 );
