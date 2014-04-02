@@ -37,7 +37,7 @@ B3145 | Merlin NIMIER-DAVID & Robin RICARD
 
 ### Traitement de l'interruption
 
-8. On utilise le signal d'interruption `TACCR0` comme vu à la question 2.
+8. On utilise le signal d'interruption `TACCR0` comme vu à la question 2. Il correspond à la source Timer_A3 à l'adresse `0FFECh` [datasheet p13].
 
 9.
 
