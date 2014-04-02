@@ -6,10 +6,19 @@ B3145 | Merlin NIMIER-DAVID & Robin RICARD
 
 ## Remise en jambe
 
-1. Quels composants pour détecter l'appui sur les boutons ?
+1. On met le premier bit du port `P1` [motherboard p19] dans la direction de lecture et on lit dedans à chaque cycle pendant l'attente [msp430 11.2.3]. Il correspond à la broche 87 du MSP [datasheet p3].
 
-		// Code
-	
+		P1DIR = P1DIR & 0xFC; // Configure push buttons as input
+		for (;;)
+		{
+			// While button is not pressed
+			while ( (P1IN & 0x01) != 0x00 );
+			// While button has not been released
+			while ( (P1IN & 0x01) == 0x00 );
+
+			// ...
+		}
+
 ## Interruption sur *timer*
 
 ### Configuration du timer
