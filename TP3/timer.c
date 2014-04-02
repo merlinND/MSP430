@@ -4,7 +4,7 @@
  * Configure the Timer_A timer of the MSP430
  * @param [in] period The period of the timer (in ms)
  */
-void init_timer (long period)
+void init_timer ()
 {
 	// Reset the timer (clear any previous configuration)
 	TACTL = TACTL | (1 << 2);
@@ -19,5 +19,5 @@ void init_timer (long period)
 
 	// Enable interruptions
 	// Note: timer interrupt vector is TAIV
-	TACTL = TACTL | (1 << 1);
+	TACCTL0 = TACCTL0 | (1 << 4);
 }

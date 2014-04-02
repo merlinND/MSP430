@@ -1,6 +1,6 @@
-#IFNDEF TIMER_H
-#DEFINE TIMER_H
+#ifndef TIMER_H
+#define TIMER_H
 
-void init_timer (long period);
+void init_timer ();
 
-#ENDIF
+#endif
