@@ -47,7 +47,7 @@ B3145 | Merlin NIMIER-DAVID & Robin RICARD
 	| -------- | -------------- | --------------------- |  --------- |
 	| `ACLK`   | 327 cycles     | 0.68 cycles           |  20.752 µs |
 	| `SMCLK`  | 10485 cycles   | 0.76 cycles           |  0.725 µs  |
-	
+
 	On pourrait réduire légèrement l'erreur en arrondissant le nombre de cycles mesurés au plus proche :
 
 	| Source   | Cycles mesurés | Erreur par intervalle |  Erreur    |
@@ -57,7 +57,7 @@ B3145 | Merlin NIMIER-DAVID & Robin RICARD
 	
 	Bien que ces valeurs semblent faibles, l'erreur cumulée pourrait s'avérer gênante. En effet, après 10 secondes avec la source `ACLK`, l'erreur cumulée est de `9 ms`.
 
-7. On choisit la source `ACLK` avec un diviseur de 1. On place le `Timer_A` en mode **Continuous**. On configure la valeur maximale (`TACCR0`) à 328 (d'après le calcul réalisé à la question précédente).
+7. On choisit la source `ACLK` avec un diviseur de 1. On place le `Timer_A` en mode **Up**. On configure la valeur maximale (`TACCR0`) à 328 (d'après le calcul réalisé à la question précédente).
 
 		void init_timer (long period)
 		{
@@ -82,9 +82,13 @@ B3145 | Merlin NIMIER-DAVID & Robin RICARD
 
 8. On utilise le signal d'interruption `TACCR0` comme vu à la question 2. Il correspond à la source Timer_A3 à l'adresse `0FFECh` [datasheet p13].
 
-9.
+9. L'instruction de préprocesseur `#pragma opt=value` est équivalente à l'instruction préprocesseur `#define OPT _Pragma("opt=value")` qui définit une option spécifique à la plateforme (_Pragma directive_). [compiler p255].  Dans notre cas, on utilise la _Pragma Directive_ `vector` qui définit quel vecteur d'interruption on va modifier. [compiler p240].
 
-10.
+10. `__interrupt` est lui aussi une directive de préprocesseur définissant à quel _handler_ va se rapporter l'interruption. On doit lui passer la signature de la fonction à appeler. Généralement, on utilise de façon associée `#pragma` et `__interrupt`. [compiler p221]
+
+		// [msp430fg4618.h l.2284]
+		#pragma vector=TIMERA0_VECTOR
+		__interrupt void mon_traitement_interruption_timer(void);
 
 11.
 

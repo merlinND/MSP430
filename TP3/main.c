@@ -10,6 +10,9 @@ void mon_traitement_interruption_timer(void)
 	cpt ++;
 }
 
+#pragma vector=TIMERA0_VECTOR
+__interrupt void mon_traitement_interruption_timer(void);
+
 int main (void)
 {
   WDTCTL = WDTPW + WDTHOLD; // stop watchdog timer
