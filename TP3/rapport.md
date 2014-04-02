@@ -39,9 +39,13 @@ B3145 | Merlin NIMIER-DAVID & Robin RICARD
 
 8. On utilise le signal d'interruption `TACCR0` comme vu à la question 2. Il correspond à la source Timer_A3 à l'adresse `0FFECh` [datasheet p13].
 
-9.
+9. L'instruction de préprocesseur `#pragma opt=value` est équivalente à l'instruction préprocesseur `#define OPT _Pragma("opt=value")` qui définit une option spécifique à la plateforme (_Pragma directive_). [compiler p255].  Dans notre cas, on utilise la _Pragma Directive_ `vector` qui définit quel vecteur d'interruption on va modifier. [compiler p240].
 
-10.
+10. `__interrupt` est lui aussi une directive de préprocesseur définissant à quel _handler_ va se rapporter l'interruption. On doit lui passer la signature de la fonction à appeler. Généralement, on utilise de façon associée `#pragma` et `__interrupt`. [compiler p221]
+
+		// [msp430fg4618.h l.2284]
+		#pragma vector=TIMERA0_VECTOR
+		__interrupt void mon_traitement_interruption_timer(void);
 
 11.
 
