@@ -181,4 +181,26 @@ B3145 | Merlin NIMIER-DAVID & Robin RICARD
 
 22.
 
-23.
+23. D'après [MSP430.pdf | p.11-5], le registre `P1IFG` contient, au moment de l'appel de la routine de traitement d'interruption, la source de l'interruption. En particulier, on doit distinguer le port P1.0 du port P1.1. On configure les ports P1.0 et P1.1 comme précédemment pour générer une interruption à la pression (front montant). De plus, on modifie les routines de traitement comme suit :
+
+		#pragma vector=PORT1_VECTOR
+		__interrupt void traitement_pression_bouton(void)
+		{
+			// Remise à zéro (port P1.1)
+			if (P1IFG & (1 << 1) == (1 << 1))
+				cpt = 0;
+			// Mise en pause (port P1.0)
+			else (P1IFG & (1 << 0) == (1 << 0))
+				is_paused = 1 - is_paused;
+			
+			// Acquittement de l'interruption [MSP430.pdf | p.11-5]
+			P1IFG = 0x0;
+		}
+		
+		#pragma vector=TIMERA0_VECTOR
+		__interrupt void mon_traitement_interruption_timer(void)
+		{
+			lcd_display_number(cpt);
+			if (is_paused == 0)
+				cpt++;
+		}
