@@ -142,19 +142,59 @@ B3145 | Merlin NIMIER-DAVID & Robin RICARD
 
 17. D'après [CPU.pdf | p.3-57], l'instruction `reti` sert spécifiquement à retourner d'une routine d'interruption, alors que `ret` est l'instruction de retour pour toutes les autres routines. Lorsque l'on utilise `reti`, le contenu du registre de statut du processeur est restauré à la valeur présente avant le saut vers la routine de traitement de l'interruption. En particulier, les bits de statut `N`, `Z`, `C` et `V` sont restaurés. Pour `ret` comme pour `reti`, le `PC` (Program Counter) est restauré à sa valeur précédente, telle que stockée dans la pile (retour à l'instruction), puis incrémenté de 2 pour passer à l'instruction suivante.
 
-18. Les vecteurs contiennent soit `FFFF`, soit rien `____` (= interruption non catchée) ou une adresse vers laquelle le programme va sauter en cas de déclenchement de l'interruption.
+18. Les vecteurs contiennent soit `FFFF` (= interruption non traitée) ou une adresse vers laquelle le programme va sauter en cas de déclenchement de l'interruption (= interruption traitée).
 
 		00FFE0	FFFF FFFF	# Vecteurs non attachés
 		00FFE4	FFFF FFFF	# Vecteurs non attachés
 		00FFE8	FFFF FFFF	# Vecteurs non attachés
-		00FFEC	3242     	# Adresse du handler d'interruption + vecteur non attaché
+		00FFEC	3242     	# Adresse du handler d'interruption
 		00FFEE	FFFF FFFF	# Vecteurs non attachés
 		00FFF2	FFFF FFFF	# Vecteurs non attachés
 		00FFF6	FFFF FFFF	# Vecteurs non attachés
 		00FFFA	FFFF FFFF	# Vecteurs non attachés
-		00FFFE	3100     	# Adresse du `__program_start` + vecteur non attaché
+		00FFFE	3100     	# Adresse du `__program_start`
 
-19.
+19. À l'aide de *breakpoints* et des vues Stack et Register, on examine l'évolution de la mémoire lors du traitement d'une interruption.
+
+	- Pendant l'exécution du programme principal, la pile contient l'adresse de retour du `main` (correspondant à un appel à la procédure `exit`). De plus, on a les valeurs notables suivantes :
+	
+			PC = 0x3262
+			SP = 0x30FE
+			SR = 0x000B
+			GIE = 1 // Les interruptions sont activées
+	
+	- Après le saut vers la routine de traitement de l'interruption générée par le timer (mais avant l'exécution de la première instruction) : la pile contient de plus l'adresse de retour de la routine d'interruption (= la valeur de `PC` juste avant l'appel) ainsi que la valeur de `SR` juste avant l'appel. Les registres contiennent :
+	
+			 PC = 0x31E2
+			 SP = 0x30FA
+			 SR = 0x0000
+			 GIE = 0 // Les interruptions sont masquées pendant le traitement
+			 
+			 // Contexte à sauvegarder
+			 R12 = 0x1103
+			 R13 = 0x0003
+			 R14 = 0x0000
+			 R15 = 0x0014
+			 
+	- Après la sauvegarde du contexte mais avant le code utilisateur, la pile contient de plus les valeurs des registres `R12`, `R13`, `R14`, `R15`. Seuls les registres `PC` et `SP` ont été modifiés en conséquence.
+	
+	- Après l'exécution du code utilisateur mais avant la restauration du contexte, la pile n'a pas été modifiée. Les registres `R12..15` ont été modifiés par le code utilisateur :
+	
+			R12 = 0x0000
+			R13 = 0x0000
+			R14 = 0x0001
+			R15 = 0x000A
+			
+	- Après la restauration du contexte mais avant l'exécution de `reti`, la pile est revenue à son état d'avant la sauvegarde du contexte, et de même pour les registres `R12..15`. Les registres `PC` et `SP` ont été modifiés en conséquence.
+	
+	- Après l'exécution de `reti`, la pile est revenue à sont état initial (avant l'appel de la routine d'interruption). De plus, tous les registres ont été restaurés :
+	
+			PC = 0x3262
+			SP = 0x30FE
+			SR = 0x000B
+			GIE = 1 // Les interruptions sont de nouveau actives
+		
+			 
 
 ## Interruption sur bouton poussoir
 
@@ -162,7 +202,7 @@ B3145 | Merlin NIMIER-DAVID & Robin RICARD
 
 		// Choix de la fonction GPIO (et non périphérique)
 		P1SEL = 0x0;
-		P1DIR = P1DIR | 1 << 1; // Direction IN
+		P1DIR = P1DIR | 0 << 1; // Direction IN
 		// Les interruptions seront générées lors
 		// des transitions 0 -> 1 (bouton pressé)
 		P1IES = P1IES | 0 << 1;
@@ -175,8 +215,46 @@ B3145 | Merlin NIMIER-DAVID & Robin RICARD
 		__interrupt void traitement_pression_bouton(void)
 		{
 			cpt = 0;
+			// Acquittement de l'interruption [MSP430.pdf | p.11-5]
+			P1IFG = P1IFG & 0 << 1;
 		}
 
-22.
+22. Comme à la question 18, on observe la table des vecteurs d'interruptions à l'aide de la vue Mémoire.
 
-23.
+		00FFDE	FFFF FFFF	# Rien + Vecteur non attaché
+		00FFE2	FFFF FFFF	# Vecteurs non attachés
+		00FFE6	FF
+		00FFE7	FF       	# Vecteur non attaché
+		00FFE8	329C     	# Adresse du handler d'interruption du bouton
+		00FFEA	FF
+		00FFEB	FF       	# Vecteur non attaché
+		00FFEC	3242     	# Adresse du handler d'interruption du timer
+		00FFEE	FFFF FFFF	# Vecteurs non attachés
+		00FFF2	FFFF FFFF	# Vecteurs non attachés
+		00FFF6	FFFF FFFF	# Vecteurs non attachés
+		00FFFA	FFFF FFFF	# Vecteurs non attachés
+		00FFFE	3100     	# Adresse du `__program_start`
+
+23. D'après [MSP430.pdf | p.11-5], le registre `P1IFG` contient, au moment de l'appel de la routine de traitement d'interruption, la source de l'interruption. En particulier, on doit distinguer le port P1.0 du port P1.1. On configure les ports P1.0 et P1.1 comme précédemment pour générer une interruption à la pression (front montant). De plus, on modifie les routines de traitement comme suit :
+
+		#pragma vector=PORT1_VECTOR
+		__interrupt void traitement_pression_bouton(void)
+		{
+			// Remise à zéro (port P1.1)
+			if (P1IFG & (1 << 1) == (1 << 1))
+				cpt = 0;
+			// Mise en pause (port P1.0)
+			else (P1IFG & (1 << 0) == (1 << 0))
+				is_paused = 1 - is_paused;
+			
+			// Acquittement de l'interruption [MSP430.pdf | p.11-5]
+			P1IFG = 0x0;
+		}
+		
+		#pragma vector=TIMERA0_VECTOR
+		__interrupt void mon_traitement_interruption_timer(void)
+		{
+			lcd_display_number(cpt);
+			if (is_paused == 0)
+				cpt++;
+		}
