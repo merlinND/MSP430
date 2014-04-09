@@ -162,7 +162,7 @@ B3145 | Merlin NIMIER-DAVID & Robin RICARD
 
 		// Choix de la fonction GPIO (et non périphérique)
 		P1SEL = 0x0;
-		P1DIR = P1DIR | 1 << 1; // Direction IN
+		P1DIR = P1DIR | 0 << 1; // Direction IN
 		// Les interruptions seront générées lors
 		// des transitions 0 -> 1 (bouton pressé)
 		P1IES = P1IES | 0 << 1;
@@ -175,6 +175,8 @@ B3145 | Merlin NIMIER-DAVID & Robin RICARD
 		__interrupt void traitement_pression_bouton(void)
 		{
 			cpt = 0;
+			// Acquittement de l'interruption [MSP430.pdf | p.11-5]
+			P1IFG = P1IFG & 0 << 1;
 		}
 
 22.
