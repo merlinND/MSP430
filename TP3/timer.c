@@ -2,7 +2,6 @@
 
 /*
  * Configure the Timer_A timer of the MSP430
- * @param [in] period The period of the timer (in ms)
  */
 void init_timer ()
 {

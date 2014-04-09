@@ -2,36 +2,72 @@
 
 <project>
   <fileVersion>2</fileVersion>
-  <fileChecksum>3379499466</fileChecksum>
+  <fileChecksum>4073530034</fileChecksum>
   <configuration>
     <name>Debug</name>
     <outputs>
-      <file>$PROJ_DIR$\Debug\Exe\TP3.d43</file>
+      <file>$PROJ_DIR$\lcd.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\TP3.pbd</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
+      <file>$TOOLKIT_DIR$\lib\dlib\dl430fn.r43</file>
+      <file>$PROJ_DIR$\Debug\Obj\timer.pbi</file>
+      <file>$PROJ_DIR$\button.c</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.r43</file>
+      <file>$TOOLKIT_DIR$\inc\intrinsics.h</file>
+      <file>$TOOLKIT_DIR$\config\lnk430FG4618.xcl</file>
+      <file>$PROJ_DIR$\Debug\Obj\lcd.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\timer.r43</file>
+      <file>$PROJ_DIR$\Debug\Obj\lcd.r43</file>
       <file>$TOOLKIT_DIR$\inc\msp430fg4618.h</file>
       <file>$TOOLKIT_DIR$\config\multiplier.xcl</file>
-      <file>$PROJ_DIR$\Debug\Obj\lcd.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\button.pbi</file>
+      <file>$PROJ_DIR$\button.h</file>
       <file>$TOOLKIT_DIR$\inc\in430.h</file>
-      <file>$TOOLKIT_DIR$\config\lnk430FG4618.xcl</file>
-      <file>$PROJ_DIR$\lcd.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\lcd.r43</file>
-      <file>$PROJ_DIR$\timer.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\TP3.pbd</file>
-      <file>$TOOLKIT_DIR$\inc\intrinsics.h</file>
-      <file>$PROJ_DIR$\lcd.c</file>
-      <file>$PROJ_DIR$\Debug\Obj\timer.pbi</file>
+      <file>$PROJ_DIR$\Debug\Exe\TP3.d43</file>
       <file>$PROJ_DIR$\main.c</file>
-      <file>$PROJ_DIR$\Debug\Obj\timer.r43</file>
+      <file>$PROJ_DIR$\Debug\Obj\button.r43</file>
+      <file>$PROJ_DIR$\lcd.c</file>
       <file>$PROJ_DIR$\timer.c</file>
-      <file>$PROJ_DIR$\Debug\Obj\main.r43</file>
-      <file>$TOOLKIT_DIR$\lib\dlib\dl430fn.r43</file>
+      <file>$PROJ_DIR$\timer.h</file>
     </outputs>
+    <file>
+      <name>$PROJ_DIR$\Debug\Obj\TP3.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 14 9 2 4</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\button.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 14</file>
+        </tool>
+        <tool>
+          <name>ICC430</name>
+          <file> 19</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 12 16 7</file>
+        </tool>
+        <tool>
+          <name>ICC430</name>
+          <file> 12 16 7</file>
+        </tool>
+      </inputs>
+    </file>
     <file>
       <name>[ROOT_NODE]</name>
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 0</file>
+          <file> 17</file>
         </tool>
       </outputs>
     </file>
@@ -40,39 +76,7 @@
       <inputs>
         <tool>
           <name>XLINK</name>
-          <file> 5 2 8 17 15 18</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Debug\Obj\TP3.pbd</name>
-      <inputs>
-        <tool>
-          <name>BILINK</name>
-          <file> 3 7 13</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\lcd.c</name>
-      <outputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 3</file>
-        </tool>
-        <tool>
-          <name>ICC430</name>
-          <file> 8</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 1 4 11</file>
-        </tool>
-        <tool>
-          <name>ICC430</name>
-          <file> 1 4 11</file>
+          <file> 8 13 19 11 6 10 3</file>
         </tool>
       </inputs>
     </file>
@@ -81,21 +85,44 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 7</file>
+          <file> 2</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 17</file>
+          <file> 6</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 1 4 11 6 9</file>
+          <file> 12 16 7 0 22 15</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 1 4 11 6 9</file>
+          <file> 12 16 7 0 22 15</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\lcd.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 9</file>
+        </tool>
+        <tool>
+          <name>ICC430</name>
+          <file> 11</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 12 16 7</file>
+        </tool>
+        <tool>
+          <name>ICC430</name>
+          <file> 12 16 7</file>
         </tool>
       </inputs>
     </file>
@@ -104,21 +131,21 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 13</file>
+          <file> 4</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 15</file>
+          <file> 10</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 1 4 11</file>
+          <file> 12 16 7</file>
         </tool>
         <tool>
           <name>ICC430</name>
-          <file> 1 4 11</file>
+          <file> 12 16 7</file>
         </tool>
       </inputs>
     </file>
