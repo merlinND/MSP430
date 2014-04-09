@@ -1,0 +1,644 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<style>
+body {
+  font-family: Helvetica, arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: white;
+  padding: 30px; }
+
+body > *:first-child {
+  margin-top: 0 !important; }
+body > *:last-child {
+  margin-bottom: 0 !important; }
+
+a {
+  color: #4183C4; }
+a.absent {
+  color: #cc0000; }
+a.anchor {
+  display: block;
+  padding-left: 30px;
+  margin-left: -30px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0; }
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+  cursor: text;
+  position: relative; }
+
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA09pVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoMTMuMCAyMDEyMDMwNS5tLjQxNSAyMDEyLzAzLzA1OjIxOjAwOjAwKSAgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OUM2NjlDQjI4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OUM2NjlDQjM4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5QzY2OUNCMDg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5QzY2OUNCMTg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsQhXeAAAABfSURBVHjaYvz//z8DJYCRUgMYQAbAMBQIAvEqkBQWXI6sHqwHiwG70TTBxGaiWwjCTGgOUgJiF1J8wMRAIUA34B4Q76HUBelAfJYSA0CuMIEaRP8wGIkGMA54bgQIMACAmkXJi0hKJQAAAABJRU5ErkJggg==) no-repeat 10px center;
+  text-decoration: none; }
+
+h1 tt, h1 code {
+  font-size: inherit; }
+
+h2 tt, h2 code {
+  font-size: inherit; }
+
+h3 tt, h3 code {
+  font-size: inherit; }
+
+h4 tt, h4 code {
+  font-size: inherit; }
+
+h5 tt, h5 code {
+  font-size: inherit; }
+
+h6 tt, h6 code {
+  font-size: inherit; }
+
+h1 {
+  font-size: 28px;
+  color: black; }
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #cccccc;
+  color: black; }
+
+h3 {
+  font-size: 18px; }
+
+h4 {
+  font-size: 16px; }
+
+h5 {
+  font-size: 14px; }
+
+h6 {
+  color: #777777;
+  font-size: 14px; }
+
+p, blockquote, ul, ol, dl, li, table, pre {
+  margin: 15px 0; }
+
+hr {
+  background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0;
+  border: 0 none;
+  color: #cccccc;
+  height: 4px;
+  padding: 0;
+}
+
+body > h2:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+body > h1:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+  body > h1:first-child + h2 {
+    margin-top: 0;
+    padding-top: 0; }
+body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0; }
+
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p {
+  margin-top: 0; }
+
+li p.first {
+  display: inline-block; }
+li {
+  margin: 0; }
+ul, ol {
+  padding-left: 30px; }
+
+ul :first-child, ol :first-child {
+  margin-top: 0; }
+
+dl {
+  padding: 0; }
+  dl dt {
+    font-size: 14px;
+    font-weight: bold;
+    font-style: italic;
+    padding: 0;
+    margin: 15px 0 5px; }
+    dl dt:first-child {
+      padding: 0; }
+    dl dt > :first-child {
+      margin-top: 0; }
+    dl dt > :last-child {
+      margin-bottom: 0; }
+  dl dd {
+    margin: 0 0 15px;
+    padding: 0 15px; }
+    dl dd > :first-child {
+      margin-top: 0; }
+    dl dd > :last-child {
+      margin-bottom: 0; }
+
+blockquote {
+  border-left: 4px solid #dddddd;
+  padding: 0 15px;
+  color: #777777; }
+  blockquote > :first-child {
+    margin-top: 0; }
+  blockquote > :last-child {
+    margin-bottom: 0; }
+
+table {
+  padding: 0;border-collapse: collapse; }
+  table tr {
+    border-top: 1px solid #cccccc;
+    background-color: white;
+    margin: 0;
+    padding: 0; }
+    table tr:nth-child(2n) {
+      background-color: #f8f8f8; }
+    table tr th {
+      font-weight: bold;
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr td {
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr th :first-child, table tr td :first-child {
+      margin-top: 0; }
+    table tr th :last-child, table tr td :last-child {
+      margin-bottom: 0; }
+
+img {
+  max-width: 100%; }
+
+span.frame {
+  display: block;
+  overflow: hidden; }
+  span.frame > span {
+    border: 1px solid #dddddd;
+    display: block;
+    float: left;
+    overflow: hidden;
+    margin: 13px 0 0;
+    padding: 7px;
+    width: auto; }
+  span.frame span img {
+    display: block;
+    float: left; }
+  span.frame span span {
+    clear: both;
+    color: #333333;
+    display: block;
+    padding: 5px 0 0; }
+span.align-center {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-center > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: center; }
+  span.align-center span img {
+    margin: 0 auto;
+    text-align: center; }
+span.align-right {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px 0 0;
+    text-align: right; }
+  span.align-right span img {
+    margin: 0;
+    text-align: right; }
+span.float-left {
+  display: block;
+  margin-right: 13px;
+  overflow: hidden;
+  float: left; }
+  span.float-left span {
+    margin: 13px 0 0; }
+span.float-right {
+  display: block;
+  margin-left: 13px;
+  overflow: hidden;
+  float: right; }
+  span.float-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: right; }
+
+code, tt {
+  margin: 0 2px;
+  padding: 0 5px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px; }
+
+pre code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent; }
+
+.highlight pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+  pre code, pre tt {
+    background-color: transparent;
+    border: none; }
+
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:0 auto;
+    }
+}
+@media print {
+	table, pre {
+		page-break-inside: avoid;
+	}
+	pre {
+		word-wrap: break-word;
+	}
+}
+</style>
+<title>Architecture des Ordinateurs — MSP430 — TP 3</title>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax:{inlineMath:[['$$$','$$$']]}});</script><script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<h1>Architecture des Ordinateurs — MSP430 — TP 3</h1>
+
+<p><em>Programmation par interruptions</em></p>
+
+<p>B3145 | Merlin NIMIER-DAVID &amp; Robin RICARD</p>
+
+<h2>Remise en jambe</h2>
+
+<ol start = "1">
+<li><p>On met le premier bit du port <code>P1</code> [motherboard p19] dans la direction de lecture et on lit dedans à chaque cycle pendant l'attente [msp430 11.2.3]. Il correspond à la broche 87 du MSP [datasheet p3].</p>
+
+<pre><code> P1DIR = P1DIR &amp; 0xFC; // Configure push buttons as input
+ for (;;)
+ {
+     // While button is not pressed
+     while ( (P1IN &amp; 0x01) != 0x00 );
+     // While button has not been released
+     while ( (P1IN &amp; 0x01) == 0x00 );
+
+     // ...
+ }
+</code></pre></li>
+</ol>
+
+
+<h2>Interruption sur <em>timer</em></h2>
+
+<h3>Configuration du timer</h3>
+
+<ol start = "2">
+<li><p>Le <code>Timer_A</code> propose les quatre modes de fonctionnement suivants, dont le fonctionnement est détaillé dans [MSP430.pdf | chap 15.2.3 et 15.2.4]</p>
+
+<ul>
+<li><strong>Stop</strong> : Le timer est arrêté, il ne se passe rien.</li>
+<li><strong>Up</strong> : Le timer compte de 0 à une valeur au choix, à spécifier dans le champ <code>TACCR0</code>. Lorsque la valeur maximale est atteinte, le compte recommence à 9. Remarque : lorsque le timer est passé en mode Up alors que le registre <code>TAR</code> a une valeur supérieure à <code>TACCR0</code>, il est directement passé à 0. Une interruption <code>CCIFG</code> est générée lorsque le compteur atteint <code>TACCR0</code>, et une interruption <code>TAIFG</code> lorsqu'il repasse à 0 [MSP430.pdf | page 15-6]</li>
+<li><strong>Continuous</strong> : Le timer compte de 0 à <code>FFFFh</code>, et reprend à 0 lorsque cette valeur maximale est atteinte. L'utlisateur peut configurer différents intervalles de temps indépendants. Une interruption à la fin de chaque intervalle. La période du prochain intervalle est communiquée au moment de l'interruption [MSP430.pdf | page 15-8].</li>
+<li><strong>Up/down</strong> : Le timer compte de 0 à une valeur au choix (à spécifier dans le champ <code>TACCR0</code>), puis de cette valeur à 0. Deux interruptions sont générées par période : lorsque la valeur maximale est atteinte, puis lorsque 0 est atteint [MSP430.pdf | page 15-9].</li>
+</ul>
+</li>
+<li><p>D'après [MSP430.pdf | page 15-4], le <code>Timer_A</code> peut utiliser les sources d'horloge : <code>ACLK</code>, <code>SMCLK</code>, ou une horloge externe vie <code>TACLK</code> ou <code>INCLK</code>. La source est configurée via le registre <code>TASSEL</code>. On peut également préciser un diviseur d'horloge (2, 4, ou 8) via le champ <code>ID</code> du registre <code>TACTL</code>.</p></li>
+<li><p>Les fréquences des horloges sont :</p>
+
+<ul>
+<li><code>ACLK</code> : <code>32.768 kHz</code> (d'après [Motherboard.pdf | p.7])</li>
+<li><code>SMCLK</code> : horloge configurable, sourcée par défaut sur l'horloge interne <code>DCOCLK</code> avec un multiplicateur de 32. On a donc ici une fréquence de <code>1.048576 MHz</code> (d'après [MSP430.pdf | chapitre 5.2]).</li>
+</ul>
+</li>
+<li><p>On souhaite mesurer un intervalle temporel de <code>10 ms</code>.</p>
+
+<table>
+<thead>
+<tr>
+<th> Source   </th>
+<th> Fréquence      </th>
+<th> Nombre de cycles pour <code>10 ms</code> </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>ACLK</code>   </td>
+<td> <code>32.768 kHz</code>   </td>
+<td> 327.68 cycles                 </td>
+</tr>
+<tr>
+<td> <code>SMCLK</code>  </td>
+<td> <code>1.048576 MHz</code> </td>
+<td> 10485.76 cycles               </td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p>Nous ne pouvons compter qu'un nombre entier de cycles. On aura donc, à chaque intervalle temporel mesuré, une erreur sur le temps mesuré.</p>
+
+<table>
+<thead>
+<tr>
+<th> Source   </th>
+<th> Cycles mesurés </th>
+<th> Erreur par intervalle </th>
+<th>  Erreur    </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>ACLK</code>   </td>
+<td> 327 cycles     </td>
+<td> 0.68 cycles           </td>
+<td>  20.752 µs </td>
+</tr>
+<tr>
+<td> <code>SMCLK</code>  </td>
+<td> 10485 cycles   </td>
+<td> 0.76 cycles           </td>
+<td>  0.725 µs  </td>
+</tr>
+</tbody>
+</table>
+
+
+<p> On pourrait réduire légèrement l'erreur en arrondissant le nombre de cycles mesurés au plus proche :</p>
+
+<table>
+<thead>
+<tr>
+<th> Source   </th>
+<th> Cycles mesurés </th>
+<th> Erreur par intervalle </th>
+<th>  Erreur    </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> <code>ACLK</code>   </td>
+<td> 328 cycles     </td>
+<td> 0.32 cycles           </td>
+<td>  9.766 µs  </td>
+</tr>
+<tr>
+<td> <code>SMCLK</code>  </td>
+<td> 10486 cycles   </td>
+<td> 0.24 cycles           </td>
+<td>  0.229 µs  </td>
+</tr>
+</tbody>
+</table>
+
+
+<p> Bien que ces valeurs semblent faibles, l'erreur cumulée pourrait s'avérer gênante. En effet, après 10 secondes avec la source <code>ACLK</code>, l'erreur cumulée est de <code>9 ms</code>.</p></li>
+<li><p>On choisit la source <code>ACLK</code> avec un diviseur de 1. On place le <code>Timer_A</code> en mode <strong>Up</strong>. On configure la valeur maximale (<code>TACCR0</code>) à 328 (d'après le calcul réalisé à la question précédente). On utilise la référence [MSP430.pdf | p.15-20 et p.15-21].</p>
+
+<pre><code> void init_timer (long period)
+ {
+     // Reset the timer (clear any previous configuration)
+     TACTL = TACTL | (1 &lt;&lt; 2);
+     // Set clock source to ACLK
+     // Clock divider is 1 by default
+     TACTL = TACTL | (1 &lt;&lt; 8);
+
+     // Enable Up mode
+     TACTL = TACTL | (1 &lt;&lt; 4);
+     // Set the maximum value for Up mode (328 cycles)
+     TACCR0 = 0x148;
+
+     // Enable interruptions
+     // Note: timer interrupt vector is TAIV
+     TACTL = TACTL | (1 &lt;&lt; 1);
+ }
+</code></pre></li>
+</ol>
+
+
+<h3>Traitement de l'interruption</h3>
+
+<ol start = "8">
+<li><p>On utilise le signal d'interruption <code>TACCR0</code> comme vu à la question 2. Il correspond à la source Timer_A3 à l'adresse <code>0FFECh</code> [datasheet.pdf | p.13].</p></li>
+<li><p>L'instruction de préprocesseur <code>#pragma opt=value</code> est équivalente à l'instruction préprocesseur <code>#define OPT _Pragma("opt=value")</code> qui définit une option spécifique à la plateforme (<em>Pragma directive</em>) (d'après [compiler.pdf | p.255]).  Dans notre cas, on utilise la <em>Pragma Directive</em> <code>vector</code> qui définit quel vecteur d'interruption on va modifier (d'après [compiler.pdf | p.240]).</p></li>
+<li><p><code>__interrupt</code> est un "qualificatif" à appliquer aux fonctions destinées être un <em>handler</em>  d'interruption. Généralement, on utilise <code>#pragma</code> en conjonction avec <code>__interrupt</code> [compiler.pdf | p.221]</p>
+
+<pre><code>// [msp430fg4618.h l.2284]
+#pragma vector=TIMERA0_VECTOR
+__interrupt void mon_traitement_interruption_timer(void);
+</code></pre></li>
+<li><p>On n'utilise pas les interruptions <code>TAIFG</code> du <code>Timer_A</code> mais le mode <strong>capture / compare</strong> du canal <code>CCR0</code>. Pour activer les interruptions sur ce canal, d'après [MSP430.pdf | p.15-22], on active le bit <code>CCIE</code> du registre <code>TACCTL0</code>.</p>
+
+<pre><code>TACCTL0 = TACCTL0 | (1 &lt;&lt; 4);
+</code></pre></li>
+<li><p>Le bit <code>GIE</code> du registre de statut du processeur sert à activer les interruptions masquables [MSP430.pdf | p.3-6].</p></li>
+<li><p>On utilise la "fonction intrinsèque" <code>__enable_interrupt</code> fournie par le compilateur, décrite dans [compiler.pdf | p.220].</p>
+
+<pre><code>__enable_interrupt();
+</code></pre></li>
+<li><p>Après comparaison de l'évolution du compteur avec un chronomètre, on ajuste le nombre de cycles de timer pour la période. On passe de 328 cycles / période à 326 cycles / période.</p></li>
+</ol>
+
+
+<h2>Étude du mécanisme d'interruption</h2>
+
+<ol start = "15">
+<li><p>Code assembleur généré par le compilateur pour le traitement d'interruption :</p>
+
+<pre><code>// Sauvegarde du contexte (d'après [compiler.pdf | p.24])
+push.w  R13
+push.w  R12
+push.w  R15
+push.w  R14
+
+mov.w   &amp;cpt,R12             // Passage du paramètre cpt
+call    #lcd_display_number  // Appel de fonction
+
+inc.w   &amp;cpt                 // Incrémentation de cpt
+
+// Restauration du contexte
+pop.w   R14
+pop.w   R15
+pop.w   R12
+pop.w   R13
+reti
+</code></pre>
+
+<p>Lorsque l'on supprime la directive <code>#pragma</code>, le compilateur supprime la fonction car elle n'est plus appelée. De même, il est impossible de supprimer le qualificatif <code>__interrupt</code> en conservant la directive <code>#pragma</code> puisque le handler d'interruption doit être défini comme tel.</p>
+
+<p>En supprimant à la fois <code>#pragma</code> et <code>__interrupt</code>, on obtient l'assembleur suivant :</p>
+
+<pre><code>mov.w   &amp;cpt,R12             // Passage du paramètre cpt
+call    #lcd_display_number  // Appel de fonction
+
+inc.w   &amp;cpt                 // Incrémentation de cpt
+</code></pre>
+
+<p>On remarque que la sauvegarde du contexte n'a pas été effectuée, ce qui est cohérent.</p></li>
+<li><p>Les registres <code>R12</code>, <code>R13</code>, <code>R14</code> et <code>R15</code> sont sauvegardés. D'après [compiler.pdf | p.24], il s'agit des registres utilisés par le handler d'interruption.</p></li>
+<li><p>D'après [CPU.pdf | p.3-57], l'instruction <code>reti</code> sert spécifiquement à retourner d'une routine d'interruption, alors que <code>ret</code> est l'instruction de retour pour toutes les autres routines. Lorsque l'on utilise <code>reti</code>, le contenu du registre de statut du processeur est restauré à la valeur présente avant le saut vers la routine de traitement de l'interruption. En particulier, les bits de statut <code>N</code>, <code>Z</code>, <code>C</code> et <code>V</code> sont restaurés. Pour <code>ret</code> comme pour <code>reti</code>, le <code>PC</code> (Program Counter) est restauré à sa valeur précédente, telle que stockée dans la pile (retour à l'instruction), puis incrémenté de 2 pour passer à l'instruction suivante.</p></li>
+<li><p>Les vecteurs contiennent soit <code>FFFF</code> (= interruption non traitée) ou une adresse vers laquelle le programme va sauter en cas de déclenchement de l'interruption (= interruption traitée).</p>
+
+<pre><code>00FFE0  FFFF FFFF   # Vecteurs non attachés
+00FFE4  FFFF FFFF   # Vecteurs non attachés
+00FFE8  FFFF FFFF   # Vecteurs non attachés
+00FFEC  3242        # Adresse du handler d'interruption
+00FFEE  FFFF FFFF   # Vecteurs non attachés
+00FFF2  FFFF FFFF   # Vecteurs non attachés
+00FFF6  FFFF FFFF   # Vecteurs non attachés
+00FFFA  FFFF FFFF   # Vecteurs non attachés
+00FFFE  3100        # Adresse du `__program_start`
+</code></pre></li>
+<li><p>À l'aide de <em>breakpoints</em> et des vues Stack et Register, on examine l'évolution de la mémoire lors du traitement d'une interruption.</p>
+
+<ul>
+<li><p>Pendant l'exécution du programme principal, la pile contient l'adresse de retour du <code>main</code> (correspondant à un appel à la procédure <code>exit</code>). De plus, on a les valeurs notables suivantes :</p>
+
+<pre><code>  PC = 0x3262
+  SP = 0x30FE
+  SR = 0x000B
+  GIE = 1 // Les interruptions sont activées
+</code></pre></li>
+<li><p>Après le saut vers la routine de traitement de l'interruption générée par le timer (mais avant l'exécution de la première instruction) : la pile contient de plus l'adresse de retour de la routine d'interruption (= la valeur de <code>PC</code> juste avant l'appel) ainsi que la valeur de <code>SR</code> juste avant l'appel. Les registres contiennent :</p>
+
+<pre><code>   PC = 0x31E2
+   SP = 0x30FA
+   SR = 0x0000
+   GIE = 0 // Les interruptions sont masquées pendant le traitement
+
+   // Contexte à sauvegarder
+   R12 = 0x1103
+   R13 = 0x0003
+   R14 = 0x0000
+   R15 = 0x0014
+</code></pre></li>
+<li><p>Après la sauvegarde du contexte mais avant le code utilisateur, la pile contient de plus les valeurs des registres <code>R12</code>, <code>R13</code>, <code>R14</code>, <code>R15</code>. Seuls les registres <code>PC</code> et <code>SP</code> ont été modifiés en conséquence.</p></li>
+<li><p>Après l'exécution du code utilisateur mais avant la restauration du contexte, la pile n'a pas été modifiée. Les registres <code>R12..15</code> ont été modifiés par le code utilisateur :</p>
+
+<pre><code>  R12 = 0x0000
+  R13 = 0x0000
+  R14 = 0x0001
+  R15 = 0x000A
+</code></pre></li>
+<li><p>Après la restauration du contexte mais avant l'exécution de <code>reti</code>, la pile est revenue à son état d'avant la sauvegarde du contexte, et de même pour les registres <code>R12..15</code>. Les registres <code>PC</code> et <code>SP</code> ont été modifiés en conséquence.</p></li>
+<li><p>Après l'exécution de <code>reti</code>, la pile est revenue à sont état initial (avant l'appel de la routine d'interruption). De plus, tous les registres ont été restaurés :</p>
+
+<pre><code>  PC = 0x3262
+  SP = 0x30FE
+  SR = 0x000B
+  GIE = 1 // Les interruptions sont de nouveau actives
+</code></pre></li>
+</ul>
+</li>
+</ol>
+
+
+<h2>Interruption sur bouton poussoir</h2>
+
+<ol start = "20">
+<li><p>D'après [Motherboard.pdf | p.15], les boutons poussoir sont connectés aux ports P1.0 et P1.1. À l'aide de [MSP430.pdf | chap.11.2.6], on configure le bouton poussoir connecté à P1.1 pour générer des interruptions lorsqu'il est pressé (front montant).</p>
+
+<pre><code>// Choix de la fonction GPIO (et non périphérique)
+P1SEL = 0x0;
+P1DIR = P1DIR | 0 &lt;&lt; 1; // Direction IN
+// Les interruptions seront générées lors
+// des transitions 0 -&gt; 1 (bouton pressé)
+P1IES = P1IES | 0 &lt;&lt; 1;
+// Activer les interruptions pour le port P1.1
+P1IE = P1IE | 1 &lt;&lt; 1;
+</code></pre></li>
+<li><p>Le traitement de l'interruption générée par la pression du bouton réinitialise le compteur. Le vecteur d'interruption correspondant au bouton est <code>PORT1_VECTOR</code> (d'après [msp430fg4618.h | l.2282])</p>
+
+<pre><code>#pragma vector=PORT1_VECTOR
+__interrupt void traitement_pression_bouton(void)
+{
+    cpt = 0;
+    // Acquittement de l'interruption [MSP430.pdf | p.11-5]
+    P1IFG = P1IFG &amp; 0 &lt;&lt; 1;
+}
+</code></pre></li>
+<li><p>Comme à la question 18, on observe la table des vecteurs d'interruptions à l'aide de la vue Mémoire.</p>
+
+<pre><code>00FFDE  FFFF FFFF   # Rien + Vecteur non attaché
+00FFE2  FFFF FFFF   # Vecteurs non attachés
+00FFE6  FF
+00FFE7  FF          # Vecteur non attaché
+00FFE8  329C        # Adresse du handler d'interruption du bouton
+00FFEA  FF
+00FFEB  FF          # Vecteur non attaché
+00FFEC  3242        # Adresse du handler d'interruption du timer
+00FFEE  FFFF FFFF   # Vecteurs non attachés
+00FFF2  FFFF FFFF   # Vecteurs non attachés
+00FFF6  FFFF FFFF   # Vecteurs non attachés
+00FFFA  FFFF FFFF   # Vecteurs non attachés
+00FFFE  3100        # Adresse du `__program_start`
+</code></pre></li>
+<li><p>D'après [MSP430.pdf | p.11-5], le registre <code>P1IFG</code> contient, au moment de l'appel de la routine de traitement d'interruption, la source de l'interruption. En particulier, on doit distinguer le port P1.0 du port P1.1. On configure les ports P1.0 et P1.1 comme précédemment pour générer une interruption à la pression (front montant). De plus, on modifie les routines de traitement comme suit :</p>
+
+<pre><code>#pragma vector=PORT1_VECTOR
+__interrupt void traitement_pression_bouton(void)
+{
+    // Remise à zéro (port P1.1)
+    if (P1IFG &amp; (1 &lt;&lt; 1) == (1 &lt;&lt; 1))
+        cpt = 0;
+    // Mise en pause (port P1.0)
+    else (P1IFG &amp; (1 &lt;&lt; 0) == (1 &lt;&lt; 0))
+        is_paused = 1 - is_paused;
+
+    // Acquittement de l'interruption [MSP430.pdf | p.11-5]
+    P1IFG = 0x0;
+}
+
+#pragma vector=TIMERA0_VECTOR
+__interrupt void mon_traitement_interruption_timer(void)
+{
+    lcd_display_number(cpt);
+    if (is_paused == 0)
+        cpt++;
+}
+</code></pre></li>
+</ol>
+
+</body>
+</html>
