@@ -142,17 +142,17 @@ B3145 | Merlin NIMIER-DAVID & Robin RICARD
 
 17.
 
-18. Les vecteurs contiennent soit `FFFF`, soit rien `____` (= interruption non catchée) ou une adresse vers laquelle le programme va sauter en cas de déclenchement de l'interruption.
+18. Les vecteurs contiennent soit `FFFF`, soit rien `____` (= interruption non catchée) ou une adresse vers laquelle le programme va sauter en cas de déclenchement de l'interruption (= interruption handlée).
 
 		00FFE0	FFFF FFFF	# Vecteurs non attachés
 		00FFE4	FFFF FFFF	# Vecteurs non attachés
 		00FFE8	FFFF FFFF	# Vecteurs non attachés
-		00FFEC	3242     	# Adresse du handler d'interruption + vecteur non attaché
+		00FFEC	3242     	# Adresse du handler d'interruption
 		00FFEE	FFFF FFFF	# Vecteurs non attachés
 		00FFF2	FFFF FFFF	# Vecteurs non attachés
 		00FFF6	FFFF FFFF	# Vecteurs non attachés
 		00FFFA	FFFF FFFF	# Vecteurs non attachés
-		00FFFE	3100     	# Adresse du `__program_start` + vecteur non attaché
+		00FFFE	3100     	# Adresse du `__program_start`
 
 19.
 
@@ -165,3 +165,17 @@ B3145 | Merlin NIMIER-DAVID & Robin RICARD
 22.
 
 23.
+
+		00FFDE	FFFF FFFF	# Rien + Vecteur non attaché
+		00FFE2	FFFF FFFF	# Vecteurs non attachés
+		00FFE6	FF
+		00FFE7	FF       	# Vecteur non attaché
+		00FFE8	329C     	# Adresse du handler d'interruption du bouton
+		00FFEA	FF
+		00FFEB	FF       	# Vecteur non attaché
+		00FFEC	3242     	# Adresse du handler d'interruption du timer
+		00FFEE	FFFF FFFF	# Vecteurs non attachés
+		00FFF2	FFFF FFFF	# Vecteurs non attachés
+		00FFF6	FFFF FFFF	# Vecteurs non attachés
+		00FFFA	FFFF FFFF	# Vecteurs non attachés
+		00FFFE	3100     	# Adresse du `__program_start`
