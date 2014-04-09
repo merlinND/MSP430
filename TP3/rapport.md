@@ -140,7 +140,7 @@ B3145 | Merlin NIMIER-DAVID & Robin RICARD
 
 16. Les registres `R12`, `R13`, `R14` et `R15` sont sauvegardés. D'après [compiler.pdf | p.24], il s'agit des registres utilisés par le handler d'interruption.
 
-17.
+17. D'après [CPU.pdf | p.3-57], l'instruction `reti` sert spécifiquement à retourner d'une routine d'interruption, alors que `ret` est l'instruction de retour pour toutes les autres routines. Lorsque l'on utilise `reti`, le contenu du registre de statut du processeur est restauré à la valeur présente avant le saut vers la routine de traitement de l'interruption. En particulier, les bits de statut `N`, `Z`, `C` et `V` sont restaurés. Pour `ret` comme pour `reti`, le `PC` (Program Counter) est restauré à sa valeur précédente, telle que stockée dans la pile (retour à l'instruction), puis incrémenté de 2 pour passer à l'instruction suivante.
 
 18. Les vecteurs contiennent soit `FFFF`, soit rien `____` (= interruption non catchée) ou une adresse vers laquelle le programme va sauter en cas de déclenchement de l'interruption (= interruption handlée).
 
@@ -158,9 +158,24 @@ B3145 | Merlin NIMIER-DAVID & Robin RICARD
 
 ## Interruption sur bouton poussoir
 
-20.
+20. D'après [Motherboard.pdf | p.15], les boutons poussoir sont connectés aux ports P1.0 et P1.1. À l'aide de [MSP430.pdf | chap.11.2.6], on configure le bouton poussoir connecté à P1.1 pour générer des interruptions lorsqu'il est pressé (front montant).
 
-21.
+		// Choix de la fonction GPIO (et non périphérique)
+		P1SEL = 0x0;
+		P1DIR = P1DIR | 1 << 1; // Direction IN
+		// Les interruptions seront générées lors
+		// des transitions 0 -> 1 (bouton pressé)
+		P1IES = P1IES | 0 << 1;
+		// Activer les interruptions pour le port P1.1
+		P1IE = P1IE | 1 << 1;
+
+21. Le traitement de l'interruption générée par la pression du bouton réinitialise le compteur. Le vecteur d'interruption correspondant au bouton est `PORT1_VECTOR` (d'après [msp430fg4618.h | l.2282])
+
+		#pragma vector=PORT1_VECTOR
+		__interrupt void traitement_pression_bouton(void)
+		{
+			cpt = 0;
+		}
 
 22.
 
