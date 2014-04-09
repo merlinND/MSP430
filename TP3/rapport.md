@@ -87,25 +87,58 @@ B3145 | Merlin NIMIER-DAVID & Robin RICARD
 
 9. L'instruction de préprocesseur `#pragma opt=value` est équivalente à l'instruction préprocesseur `#define OPT _Pragma("opt=value")` qui définit une option spécifique à la plateforme (_Pragma directive_) (d'après [compiler.pdf | p.255]).  Dans notre cas, on utilise la _Pragma Directive_ `vector` qui définit quel vecteur d'interruption on va modifier (d'après [compiler.pdf | p.240]).
 
-10. `__interrupt` est égalemetn une directive de préprocesseur définissant à quel _handler_ va se rapporter l'interruption. On doit lui passer la signature de la fonction à appeler. Généralement, on utilise de `#pragma` en conjonction de `__interrupt`. [compiler p221]
+10. `__interrupt` est un "qualificatif" à appliquer aux fonctions destinées être un _handler_  d'interruption. Généralement, on utilise `#pragma` en conjonction avec `__interrupt` [compiler.pdf | p.221]
 
 		// [msp430fg4618.h l.2284]
 		#pragma vector=TIMERA0_VECTOR
 		__interrupt void mon_traitement_interruption_timer(void);
 
-11.
+11. On n'utilise pas les interruptions `TAIFG` du `Timer_A` mais le mode **capture / compare** du canal `CCR0`. Pour activer les interruptions sur ce canal, d'après [MSP430.pdf | p.15-22], on active le bit `CCIE` du registre `TACCTL0`.
 
-12.
+		TACCTL0 = TACCTL0 | (1 << 4);
 
-13.
+12. Le bit `GIE` du registre de statut du processeur sert à activer les interruptions masquables [MSP430.pdf | p.3-6].
 
-14.
+13. On utilise la "fonction intrinsèque" `__enable_interrupt` fournie par le compilateur, décrite dans [compiler.pdf | p.220].
+
+		__enable_interrupt();
+
+14. Après comparaison de l'évolution du compteur avec un chronomètre, on ajuste le nombre de cycles de timer pour la période. On passe de 328 cycles / période à 326 cycles / période.
 
 ## Étude du mécanisme d'interruption
 
-15.
+15. Code assembleur généré par le compilateur pour le traitement d'interruption :
 
-16.
+		// Sauvegarde du contexte (d'après [compiler.pdf | p.24])
+		push.w  R13
+		push.w  R12
+		push.w  R15
+		push.w  R14
+
+		mov.w   &cpt,R12             // Passage du paramètre cpt
+		call    #lcd_display_number  // Appel de fonction
+
+		inc.w   &cpt                 // Incrémentation de cpt
+
+		// Restauration du contexte
+		pop.w   R14
+		pop.w   R15
+		pop.w   R12
+		pop.w   R13
+		reti
+
+	Lorsque l'on supprime la directive `#pragma`, le compilateur supprime la fonction car elle n'est plus appelée. De même, il est impossible de supprimer le qualificatif `__interrupt` en conservant la directive `#pragma` puisque le handler d'interruption doit être défini comme tel.
+	
+	En supprimant à la fois `#pragma` et `__interrupt`, on obtient l'assembleur suivant :
+	
+		mov.w   &cpt,R12             // Passage du paramètre cpt
+		call    #lcd_display_number  // Appel de fonction
+
+		inc.w   &cpt                 // Incrémentation de cpt
+		
+	On remarque que la sauvegarde du contexte n'a pas été effectuée, ce qui est cohérent.
+
+16. Les registres `R12`, `R13`, `R14` et `R15` sont sauvegardés. D'après [compiler.pdf | p.24], il s'agit des registres utilisés par le handler d'interruption.
 
 17.
 
