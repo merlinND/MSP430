@@ -128,21 +128,31 @@ B3145 | Merlin NIMIER-DAVID & Robin RICARD
 		reti
 
 	Lorsque l'on supprime la directive `#pragma`, le compilateur supprime la fonction car elle n'est plus appelée. De même, il est impossible de supprimer le qualificatif `__interrupt` en conservant la directive `#pragma` puisque le handler d'interruption doit être défini comme tel.
-	
+
 	En supprimant à la fois `#pragma` et `__interrupt`, on obtient l'assembleur suivant :
-	
+
 		mov.w   &cpt,R12             // Passage du paramètre cpt
 		call    #lcd_display_number  // Appel de fonction
 
 		inc.w   &cpt                 // Incrémentation de cpt
-		
+
 	On remarque que la sauvegarde du contexte n'a pas été effectuée, ce qui est cohérent.
 
 16. Les registres `R12`, `R13`, `R14` et `R15` sont sauvegardés. D'après [compiler.pdf | p.24], il s'agit des registres utilisés par le handler d'interruption.
 
 17.
 
-18.
+18. Les vecteurs contiennent soit `FFFF`, soit rien `____` (= interruption non catchée) ou une adresse vers laquelle le programme va sauter en cas de déclenchement de l'interruption.
+
+		00FFE0	FFFF FFFF	# Vecteurs non attachés
+		00FFE4	FFFF FFFF	# Vecteurs non attachés
+		00FFE8	FFFF FFFF	# Vecteurs non attachés
+		00FFEC	3242     	# Adresse du handler d'interruption + vecteur non attaché
+		00FFEE	FFFF FFFF	# Vecteurs non attachés
+		00FFF2	FFFF FFFF	# Vecteurs non attachés
+		00FFF6	FFFF FFFF	# Vecteurs non attachés
+		00FFFA	FFFF FFFF	# Vecteurs non attachés
+		00FFFE	3100     	# Adresse du `__program_start` + vecteur non attaché
 
 19.
 
