@@ -25,7 +25,10 @@ B3145 | Merlin NIMIER-DAVID & Robin RICARD
 
 2. Le `Timer_A` propose les quatre modes de fonctionnement suivants, dont le fonctionnement est détaillé dans [MSP430.pdf | chap 15.2.3 et 15.2.4]
 
-	- **Stop** : Le timer est arrêté, il ne se passe rien.	- **Up** : Le timer compte de 0 à une valeur au choix, à spécifier dans le champ `TACCR0`. Lorsque la valeur maximale est atteinte, le compte recommence à 9. Remarque : lorsque le timer est passé en mode Up alors que le registre `TAR` a une valeur supérieure à `TACCR0`, il est directement passé à 0. Une interruption `CCIFG` est générée lorsque le compteur atteint `TACCR0`, et une interruption `TAIFG` lorsqu'il repasse à 0 [MSP430.pdf | page 15-6]	- **Continuous** : Le timer compte de 0 à `FFFFh`, et reprend à 0 lorsque cette valeur maximale est atteinte. L'utlisateur peut configurer différents intervalles de temps indépendants. Une interruption à la fin de chaque intervalle. La période du prochain intervalle est communiquée au moment de l'interruption [MSP430.pdf | page 15-8].	- **Up/down** : Le timer compte de 0 à une valeur au choix (à spécifier dans le champ `TACCR0`), puis de cette valeur à 0. Deux interruptions sont générées par période : lorsque la valeur maximale est atteinte, puis lorsque 0 est atteint [MSP430.pdf | page 15-9].
+	- **Stop** : Le timer est arrêté, il ne se passe rien.
+	- **Up** : Le timer compte de 0 à une valeur au choix, à spécifier dans le champ `TACCR0`. Lorsque la valeur maximale est atteinte, le compte recommence à 9. Remarque : lorsque le timer est passé en mode Up alors que le registre `TAR` a une valeur supérieure à `TACCR0`, il est directement passé à 0. Une interruption `CCIFG` est générée lorsque le compteur atteint `TACCR0`, et une interruption `TAIFG` lorsqu'il repasse à 0 [MSP430.pdf | page 15-6]
+	- **Continuous** : Le timer compte de 0 à `FFFFh`, et reprend à 0 lorsque cette valeur maximale est atteinte. L'utlisateur peut configurer différents intervalles de temps indépendants. Une interruption à la fin de chaque intervalle. La période du prochain intervalle est communiquée au moment de l'interruption [MSP430.pdf | page 15-8].
+	- **Up/down** : Le timer compte de 0 à une valeur au choix (à spécifier dans le champ `TACCR0`), puis de cette valeur à 0. Deux interruptions sont générées par période : lorsque la valeur maximale est atteinte, puis lorsque 0 est atteint [MSP430.pdf | page 15-9].
 
 3. D'après [MSP430.pdf | page 15-4], le `Timer_A` peut utiliser les sources d'horloge : `ACLK`, `SMCLK`, ou une horloge externe vie `TACLK` ou `INCLK`. La source est configurée via le registre `TASSEL`. On peut également préciser un diviseur d'horloge (2, 4, ou 8) via le champ `ID` du registre `TACTL`.
 
@@ -54,7 +57,7 @@ B3145 | Merlin NIMIER-DAVID & Robin RICARD
 	| -------- | -------------- | --------------------- |  --------- |
 	| `ACLK`   | 328 cycles     | 0.32 cycles           |  9.766 µs  |
 	| `SMCLK`  | 10486 cycles   | 0.24 cycles           |  0.229 µs  |
-	
+
 	Bien que ces valeurs semblent faibles, l'erreur cumulée pourrait s'avérer gênante. En effet, après 10 secondes avec la source `ACLK`, l'erreur cumulée est de `9 ms`.
 
 7. On choisit la source `ACLK` avec un diviseur de 1. On place le `Timer_A` en mode **Up**. On configure la valeur maximale (`TACCR0`) à 328 (d'après le calcul réalisé à la question précédente). On utilise la référence [MSP430.pdf | p.15-20 et p.15-21].
@@ -125,21 +128,31 @@ B3145 | Merlin NIMIER-DAVID & Robin RICARD
 		reti
 
 	Lorsque l'on supprime la directive `#pragma`, le compilateur supprime la fonction car elle n'est plus appelée. De même, il est impossible de supprimer le qualificatif `__interrupt` en conservant la directive `#pragma` puisque le handler d'interruption doit être défini comme tel.
-	
+
 	En supprimant à la fois `#pragma` et `__interrupt`, on obtient l'assembleur suivant :
-	
+
 		mov.w   &cpt,R12             // Passage du paramètre cpt
 		call    #lcd_display_number  // Appel de fonction
 
 		inc.w   &cpt                 // Incrémentation de cpt
-		
+
 	On remarque que la sauvegarde du contexte n'a pas été effectuée, ce qui est cohérent.
 
 16. Les registres `R12`, `R13`, `R14` et `R15` sont sauvegardés. D'après [compiler.pdf | p.24], il s'agit des registres utilisés par le handler d'interruption.
 
 17. D'après [CPU.pdf | p.3-57], l'instruction `reti` sert spécifiquement à retourner d'une routine d'interruption, alors que `ret` est l'instruction de retour pour toutes les autres routines. Lorsque l'on utilise `reti`, le contenu du registre de statut du processeur est restauré à la valeur présente avant le saut vers la routine de traitement de l'interruption. En particulier, les bits de statut `N`, `Z`, `C` et `V` sont restaurés. Pour `ret` comme pour `reti`, le `PC` (Program Counter) est restauré à sa valeur précédente, telle que stockée dans la pile (retour à l'instruction), puis incrémenté de 2 pour passer à l'instruction suivante.
 
-18. 
+18. Les vecteurs contiennent soit `FFFF`, soit rien `____` (= interruption non catchée) ou une adresse vers laquelle le programme va sauter en cas de déclenchement de l'interruption.
+
+		00FFE0	FFFF FFFF	# Vecteurs non attachés
+		00FFE4	FFFF FFFF	# Vecteurs non attachés
+		00FFE8	FFFF FFFF	# Vecteurs non attachés
+		00FFEC	3242     	# Adresse du handler d'interruption + vecteur non attaché
+		00FFEE	FFFF FFFF	# Vecteurs non attachés
+		00FFF2	FFFF FFFF	# Vecteurs non attachés
+		00FFF6	FFFF FFFF	# Vecteurs non attachés
+		00FFFA	FFFF FFFF	# Vecteurs non attachés
+		00FFFE	3100     	# Adresse du `__program_start` + vecteur non attaché
 
 19.
 
@@ -164,7 +177,6 @@ B3145 | Merlin NIMIER-DAVID & Robin RICARD
 			cpt = 0;
 		}
 
-2
-2.
+22.
 
 23.
